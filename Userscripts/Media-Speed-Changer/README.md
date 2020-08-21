@@ -19,6 +19,6 @@ You can freely change the keys or the speeds as you like. These are the ones tha
 ## License
 
 - You can view the code, download copies and run this software as is.
-- You can link to this userscript's repository homepage (https://github.com/hjk789/Creations/tree/master/Userscripts/Media-Speed-Changer) or to it's GreasyFork page (https://greasyfork.org/en/scripts/409500-media-speed-changer). 
+- You can link to this userscript's repository homepage (https://github.com/hjk789/Creations/tree/master/Userscripts/Media-Speed-Changer) or to it's GreasyFork page (https://greasyfork.org/scripts/409500-media-speed-changer). 
 - You can modify your copy for personal use.
 - You cannot do any other action not allowed in this license.  
