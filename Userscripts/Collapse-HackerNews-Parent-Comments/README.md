@@ -17,6 +17,6 @@ You can freely change these settings or add more depth levels if you want. These
 ## License
 
 - You can view the code, download copies and run this software as is.
-- You can link to this userscript's repository homepage (https://github.com/hjk789/Creations/tree/master/Userscripts/Collapse-HackerNews-Parent-Comments) or it's GreasyFork's page (https://greasyfork.org/en/scripts/409640-collapse-hackernews-parent-comments). 
+- You can link to this userscript's repository homepage (https://github.com/hjk789/Creations/tree/master/Userscripts/Collapse-HackerNews-Parent-Comments) or it's GreasyFork's page (https://greasyfork.org/scripts/409640-collapse-hackernews-parent-comments). 
 - You can modify your copy as you like.
 - You cannot do any other action not allowed in this license.  
