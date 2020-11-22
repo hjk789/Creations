@@ -1,3 +1,3 @@
-## VPNs Manager
+## Auto Brightness Decreaser
 
-A program developed in AutoHotkey to manage SoftEther VPNs from VPN Gate. TODO.
+Automatically decrease the screen brightness and gamma ramp each two minutes, starting from the set hour.
