@@ -1,2 +1,3 @@
 # Creations
-Some of the things I created, mostly scripts or small programs
+
+Some of the other things I created, mostly scripts or small programs.
