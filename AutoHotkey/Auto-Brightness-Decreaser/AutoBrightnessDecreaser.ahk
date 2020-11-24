@@ -12,7 +12,7 @@ ListLines off
 global startHour := 19
 ;***************
 
-#include %A_ScriptDir%\Monitor Class.ahk				; Using the Monitor Class created by jNizM (https://raw.githubusercontent.com/jNizM/Class_Monitor/master/src/Class_Monitor.ahk).
+#include %A_ScriptDir%\Class_Monitor.ahk				; Using the Monitor Class created by jNizM (https://raw.githubusercontent.com/jNizM/Class_Monitor/master/src/Class_Monitor.ahk).
 
 OnExit("ExitEvent")							; Run the ExitEvent function below when the script exits for any reason, including when the system is shutdown.
 
