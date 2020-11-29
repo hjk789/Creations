@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CheatTable CheatEngineTableVersion="29">
+  <CheatEntries>
+    <CheatEntry>
+      <ID>3</ID>
+      <Description>"HP"</Description>
+      <VariableType>4 Bytes</VariableType>
+      <Address>2054A150</Address>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>5</ID>
+      <Description>"EXP"</Description>
+      <VariableType>4 Bytes</VariableType>
+      <Address>2054A294</Address>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>7</ID>
+      <Description>"EXP Multiplier"</Description>
+      <LastState/>
+      <VariableType>Auto Assembler Script</VariableType>
+      <AssemblerScript>[ENABLE]
+{$lua}
+expAddress = "2054A294"
+changed = false
+
+-- Because the address of what writes to the EXP address always changes when the game is restarted, it's address need to be found dynamically each time.
+-- This sets a breakpoint for write to the EXP address. So it requires to kill one monster to make it start working in the next kill.
+-- The code changes need to be made two times: one before the Level Up and one after, as the address and instructions change when the Level Up happens,
+-- but after the next Level Up it stays like this until the game is restarted.
+
+debug_setBreakpoint(expAddress, 4, bptWrite, bpmDebugRegister, function()
+
+    local expUpdaterAddressInteger = getPreviousOpcode(EIP)                           -- EIP has the address of the instruction after the one that updates the current EXP. This gets the address of the updater.
+    expUpdaterAddressHex = string.format("%X",expUpdaterAddressInteger)               -- The address is returned in integer format, this converts it to hexadecimal, to be used in the autoAssemble.
+
+    local extraField, secondOpcode, bytes, address = splitDisassembledString(disassemble(EIP))      -- Disassemble the address after the updater to get its opcode. I don't know what
+                                                                                                    -- this instruction is responsible for, but it's required, otherwise the game crashes.
+    debug_continueFromBreakpoint(co_run)
+
+    if string.find(secondOpcode, "eax") then         -- Before the Level Up, this instruction assigns to eax, but after the Level Up it assigns to a fixed address (both different addresses).
+       nopSize = 2      -- The number of bytes to be nop-ed so that all bytes of the original instruction are replaced. It's not easy to get this value programatically,
+    else                -- and needs to be exact. I had to take them from the code injection template. The Lua function getInstructionSize() returns a different number.
+       nopSize = 7
+       changed = false
+    end
+
+    if not changed then
+      timer = createTimer(getMainForm())     -- Here a timer is being used to let the game exit this memory region before making the changes, otherwise it crashes.
+      timer.Interval = 500
+      timer.OnTimer = function(timer)
+          timer.destroy()                    -- Trigger the timer only once.
+
+          autoAssemble(string.format(
+          [[
+            alloc(ExpMultiplier,2048)   // Create a new memory allocation named ExpMultiplier. This is needed so that the additional code
+                                        // doesn't mess up the current addresses, otherwise it usually causes a crash or a glitch.
+
+            ExpMultiplier:
+            //  edx: New EXP after killing a monster.
+            // [ecx]: Current EXP.
+            //
+            sub edx,[ecx]        // Subtract the new EXP from the current one to get only the EXP just received. The square brackets indicate that it should use the value contained in ecx's address, otherwise the address itself is treated as the value.
+            imul edx,(int)10     // Multiply the newly received EXP by decimal 10. By default the second argument is interpreted as hexadecimal. The (int) indicates that it should be interpreted as an integer instead.
+            add edx,[ecx]        // Sum the multiplied result with the current exp.
+            mov [ecx],edx        // Assign the multiplied EXP as the value of ecx, which is the current EXP.
+            %s                   // The instruction after the updater.
+            jmp returnhere       // jmp to the end to prevent an infinite loop.
+
+            %s:                  // The updater's address.
+            jmp ExpMultiplier    // Replace the first instruction with a jmp to the new code.
+            nop %s               // Replace the second instruction with a nop that takes the same number of bytes than the original instruction. This is needed to preserve the original addresses sequence.
+            returnhere:
+          ]], secondOpcode, expUpdaterAddressHex, nopSize))
+
+          changed = true
+
+          if nopSize == 7 then
+             debug_removeBreakpoint(expAddress)
+          end
+       end
+    end
+
+    return 0
+end)
+
+{$asm}
+
+[DISABLE]
+dealloc(ExpMultiplier)
+
+</AssemblerScript>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>8</ID>
+      <Description>"Gil"</Description>
+      <VariableType>4 Bytes</VariableType>
+      <Address>20547F08</Address>
+    </CheatEntry>
+  </CheatEntries>
+  <UserdefinedSymbols/>
+  <LuaScript>
+</LuaScript>
+</CheatTable>
