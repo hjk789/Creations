@@ -1,0 +1,634 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CheatTable CheatEngineTableVersion="29">
+  <CheatEntries>
+    <CheatEntry>
+      <ID>298</ID>
+      <Description>"Enable"</Description>
+      <Options moHideChildren="1"/>
+      <LastState Activated="1"/>
+      <VariableType>Auto Assembler Script</VariableType>
+      <AssemblerScript>{$lua}
+if syntaxcheck then return end
+
+[ENABLE]
+
+
+function tohex(int)
+   return string.format("%X", int)
+end
+
+------
+
+openProcess("pcsx2.exe")
+
+strings_add(getAutoAttachList(), "pcsx2.exe")
+
+local CEtableAddressList = getAddressList()
+
+CEtableAddressList.Control[1].OnSectionClick = nil  -- Disable the collumn sorting to prevent the records order to be messed up.
+
+local thoseTwoBytes = readBytes(AOBScan("05 B8 A1 xx xx")[0],5,true)       -- There are two bytes that always change on reboot but that are required. This
+xxxx = tohex(thoseTwoBytes[4]) .. " " .. tohex(thoseTwoBytes[5])           -- scans the memory to get them and stores them in a global variable to be used by the scripts.
+
+-- When the gold multiplier cheat is enabled, it multiplies the real value but the gold HUD still shows the original value.
+-- I tried to change the value the earliest possible so that the HUD could get the changed value instead of the original, but still the result was the same whatever I tried.
+-- The code below gets the address of the instruction that updates the gold HUD, then store in a symbol the address of the gold HUD value to be used by the gold multiplier.
+-- This is needed because the HUD address is different for each stage.
+
+local goldHudUpdaterAddress = AOBScan("89 11 8B 0D 20 A0 xx xx 81 C1 6C 02 00 00 89 C8 C1 E8 0C 8B 04 85 30 xx xx xx BB xx")[0]
+
+autoAssemble([[
+alloc(getGoldHUDAddress,32)
+alloc(goldHudAddress,16)
+label(return)
+label(originalcode)
+label(exit)
+registersymbol(goldHudAddress)
+
+getGoldHUDAddress:
+mov [goldHudAddress],ecx
+
+originalcode:
+mov [ecx],edx
+db 8B 0D 20 A0 ]]..xxxx..[[
+
+exit:
+jmp return
+
+]]..goldHudUpdaterAddress..[[:
+jmp getGoldHUDAddress
+nop 3
+return:
+]])
+
+
+
+[DISABLE]
+</AssemblerScript>
+      <CheatEntries>
+        <CheatEntry>
+          <ID>255</ID>
+          <Description>"Invincibility"</Description>
+          <LastState/>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>{$lua}
+if syntaxcheck then return end
+local secondOpcodeBytes = "C7 05 B8 A1 "..xxxx.." FC 4C 1C 00"
+local originalBytes = "89 11 "..secondOpcodeBytes
+-- 89 11 C7 05 B8 A1 xx xx 04 33 21 00
+
+[ENABLE]
+
+-- The instruction in this address is run whenever an entity is attacked. It's purpose is decreasing the entity's current health.
+healthUpdaterAddress = AOBScan(originalBytes.." A1")
+
+if healthUpdaterAddress == nil then
+   showMessage("Couldn't find the health updater bytes! Make sure that someone is attacked at least once before activating this.")
+   return 0
+end
+
+healthUpdaterAddress = healthUpdaterAddress[0]
+
+autoAssemble([[
+alloc(invincibility,32)
+label(return)
+label(originalcode)
+label(exit)
+
+// The instruction that decreases the player's health is the same that decreases the enemy's health.
+// The code below checks if the address of the entity being attacked is a player character or an enemy.
+// At least in my case, player characters are always inside the range 215C0000-215CA000. Before this are soldiers, and after this are boss characters.
+// So if it's between these two addresses, don't do anything, otherwise, run the original code normally.
+
+invincibility:
+cmp ecx,215C0000      // ecx contains the address of the health of the entity being attacked.
+jl originalcode       // Soldiers
+cmp ecx,215CA000
+jg originalcode       // Character bosses
+jmp return            // Otherwise, don't do anything.
+
+originalcode:
+mov [ecx],edx         // edx is the decreased value to be set to the entity's current health.
+db ]]..secondOpcodeBytes..[[
+
+exit:
+jmp return
+
+]]..healthUpdaterAddress..[[:
+jmp invincibility
+nop 7
+return:
+]])
+
+[DISABLE]
+
+autoAssemble([[
+dealloc(invincibility)
+
+]]..healthUpdaterAddress..[[:
+db ]]..originalBytes)
+</AssemblerScript>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>315</ID>
+          <Description>"Infinite Basara"</Description>
+          <LastState Activated="1"/>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>{$lua}
+if syntaxcheck then return end
+
+[ENABLE]
+
+autoAssemble([[
+alloc(infiniteBasara,32)
+label(return)
+label(originalcode)
+label(exit)
+
+// The instruction in this address is run on every frame. It updates the current basara gauge.
+aobscan(basaraMeterUpdater, A3 60 9F xx xx 89 15 64 9F xx xx 8B 0D 40 9F xx xx 81 C1 08 09)
+
+infiniteBasara:
+mov [ecx],(int)16000     // ecx contains the address of the basara meter. This sets the current basara value to the max value.
+                         // Trivia: the actual max value of the basara gauge is 15000, but for some reason Yukimura's max value is 16000.
+
+originalcode:
+db A3 60 9F ]]..xxxx..[[
+
+exit:
+jmp return
+
+basaraMeterUpdater:
+jmp infiniteBasara
+return:
+]])
+
+[DISABLE]
+
+autoAssemble([[
+dealloc(infiniteBasara)
+
+basaraMeterUpdater:
+db A3 60 9F ]]..xxxx)
+</AssemblerScript>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>297</ID>
+          <Description>"EXP Multiplier"</Description>
+          <LastState/>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>{$lua}
+if syntaxcheck then return end
+
+local secondOpcodeBytes = "C7 05 B8 A1 "..xxxx.." 0C E3 20 00"
+local originalBytes = "89 11 "..secondOpcodeBytes
+-- 89 11 C7 05 B8 A1 xx xx 0C E3 20 00
+
+[ENABLE]
+
+expUpdaterAddress = AOBScan(originalBytes.." A1")
+
+if expUpdaterAddress == nil then
+   showMessage("Couldn't find the updater bytes!")
+   return 0
+end
+
+expUpdaterAddress = expUpdaterAddress[0]
+
+autoAssemble([[
+alloc(expMultiplier,32)
+label(return)
+label(originalcode)
+label(exit)
+
+// edx: new EXP value.
+// ecx: the address of the current EXP.
+expMultiplier:
+sub edx,[ecx]        // This subtract the new EXP from the current one to get only the EXP just received. The square brackets indicate that it should use the value contained in ecx's address, otherwise the address itself is treated as the value.
+imul edx,(int)10     // Multiply the newly received EXP by decimal 10. By default the second argument is interpreted as hexadecimal. The (int) indicates that it should be interpreted as an integer instead.
+add edx,[ecx]        // Add back the current EXP to the new one.
+
+originalcode:
+mov [ecx],edx
+db ]]..secondOpcodeBytes..[[
+
+exit:
+jmp return
+
+]]..expUpdaterAddress..[[:
+jmp expMultiplier
+nop 7
+return:
+]])
+
+[DISABLE]
+
+autoAssemble([[
+dealloc(expMultiplier)
+
+]]..expUpdaterAddress..[[:
+db ]]..originalBytes)
+</AssemblerScript>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>299</ID>
+          <Description>"Gold Multiplier"</Description>
+          <LastState/>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>{$lua}
+if syntaxcheck then return end
+
+local secondOpcodeBytes = "C7 05 B8 A1 "..xxxx.." 28 71 20 00"
+local originalBytes = "89 11 "..secondOpcodeBytes
+-- 89 11 C7 05 B8 A1 xx xx 28 71 20 00
+
+[ENABLE]
+
+goldUpdaterAddress = AOBScan(originalBytes.." A1")
+
+if goldUpdaterAddress == nil then
+   showMessage("Couldn't find the gold updater bytes!")
+   return 0
+end
+
+goldUpdaterAddress = goldUpdaterAddress[0]
+
+autoAssemble([[
+alloc(goldMultiplier,64)
+label(return)
+label(originalcode)
+label(exit)
+
+// edx: new gold value.
+// ecx: the address of the current character's current gold (each character has their own static address to store the gold).
+goldMultiplier:
+sub edx,[ecx]                // Subtract the current gold from the new one to get only the gold just received.
+imul edx,(int)25             // Multiply the newly received gold by decimal 25.
+add edx,[ecx]                // Sum back the current gold to the multiplied one.
+push eax                     // push eax in the stack to preserve it's current value and free it to be used.
+mov eax,[goldHudAddress]     // Copy the address stored in the goldHudAddress symbol to eax, as ASM can't process value with value, only register with value or register with register.
+mov [eax],edx                // Update the gold HUD value with the multiplied value, otherwise the HUD would show the old value.
+pop eax                      // Return eax to it's previous value.
+
+originalcode:
+mov [ecx],edx     // Set the new gold value as the current one.
+db ]]..secondOpcodeBytes..[[
+
+exit:
+jmp return
+
+]]..goldUpdaterAddress..[[:
+jmp goldMultiplier
+nop 7
+return:
+]])
+
+
+[DISABLE]
+
+autoAssemble([[
+dealloc(goldMultiplier)
+
+]]..goldUpdaterAddress..[[:
+db ]]..originalBytes)
+</AssemblerScript>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>296</ID>
+          <Description>"Battle Drive Always Ready"</Description>
+          <LastState Activated="1"/>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>{$lua}
+if syntaxcheck then return end
+
+local secondOpcodeBytes = "A3 30 9F "..xxxx
+local originalBytes = "0F B6 01 "..secondOpcodeBytes
+-- 0F B6 01 A3 30 9F xx xx
+
+[ENABLE]
+
+-- The instruction in this address is run whenever the drive button is pressed. It checks what is the currently ready battle drive level.
+driveCheckerAddress = AOBScan(originalBytes.." C7 05 34 9F xx xx 00 00 00 00 83 3D 30 9F xx xx 00 75 0D 83 3D 34 9F xx xx 00 0F 84 39 00 00 00 31 C0 A3 34 9F xx xx C7 05 30 9F xx xx 01 00 00 00 C7 05 B8 A1 xx xx AC")
+
+if driveCheckerAddress == nil then
+   showMessage("Couldn't find the drive checker bytes! Make sure to press the drive button at least once before activating this.")
+   return 0
+end
+
+driveCheckerAddress = driveCheckerAddress[0]
+
+autoAssemble([[
+alloc(driveAlwaysReady,32)
+label(return)
+label(originalcode)
+label(exit)
+
+driveAlwaysReady:
+add [ecx],3      // ecx contains the address of the currently ready drive level of the current character. This sets it to 3.
+
+originalcode:
+movzx eax,byte ptr [ecx]
+db ]]..secondOpcodeBytes..[[
+
+exit:
+jmp return
+
+]]..driveCheckerAddress..[[:
+jmp driveAlwaysReady
+nop 3
+return:
+]])
+
+[DISABLE]
+
+autoAssemble([[
+dealloc(driveAlwaysReady)
+
+]]..driveCheckerAddress..[[:
+db ]]..originalBytes)
+</AssemblerScript>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>295</ID>
+          <Description>"Infinite Battle Drive"</Description>
+          <LastState Activated="1"/>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>{$lua}
+if syntaxcheck then return end
+
+[ENABLE]
+
+-- The instruction in this address is run as long as the player character is in the battle drive mode.
+-- It's responsible for counting down the remaining time.
+remaininingDriveUpdaterAddress = AOBScan("66 89 11 C7 05 B8 xx xx xx 8C 73 20 00")
+
+if remaininingDriveUpdaterAddress == nil then
+   showMessage("Couldn't find the battle drive time updater bytes! Make sure to trigger the battle drive at least once before activating this.")
+   return 0
+end
+
+remaininingDriveUpdaterAddress = remaininingDriveUpdaterAddress[0]
+
+autoAssemble(remaininingDriveUpdaterAddress..[[:
+nop 3    // Replace the original code with code that does nothing.
+]])
+
+[DISABLE]
+
+autoAssemble(remaininingDriveUpdaterAddress..[[:
+db 66 89 11
+]])
+</AssemblerScript>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>294</ID>
+          <Description>"Always Receive Battle Drive Level 3"</Description>
+          <LastState/>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>{$lua}
+if syntaxcheck then return end
+
+local secondOpcodeBytes = "C7 05 B8 A1 "..xxxx.." 64 97 20 00"
+local originalBytes = "88 11 "..secondOpcodeBytes
+-- 88 11 C7 05 B8 A1 xx xx 64 97 20 00
+
+[ENABLE]
+
+-- The instruction in this address is run on every 100th enemy killed. It updates the current battle drive level ready.
+driveUpdaterAddress = AOBScan(originalBytes.." A1")
+
+if driveUpdaterAddress == nil then
+   showMessage("Couldn't find the updater bytes!")
+   return 0
+end
+
+driveUpdaterAddress = driveUpdaterAddress[0]
+
+autoAssemble([[
+alloc(skipToDriveThree,32)
+label(return)
+label(originalcode)
+label(exit)
+
+skipToDriveThree:
+mov dl,3         // dl contains the value to be set. This sets it to 3.
+
+originalcode:
+mov [ecx],dl     // ecx contains the address of the level of the currrently ready battle drive.
+db ]]..secondOpcodeBytes..[[
+
+exit:
+jmp return
+
+]]..driveUpdaterAddress..[[:
+jmp skipToDriveThree
+nop 7
+return:
+]])
+
+[DISABLE]
+
+autoAssemble([[
+dealloc(skipToDriveThree)
+
+]]..driveUpdaterAddress..[[:
+db ]]..originalBytes)
+</AssemblerScript>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>301</ID>
+          <Description>"Instant Charged Attack"</Description>
+          <LastState Activated="1"/>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>{$lua}
+if syntaxcheck then return end
+
+local secondOpcodeBytes = "A1 70 9F "..xxxx
+local originalBytes = "88 11 "..secondOpcodeBytes
+-- 88 11 A1 70 9F xx xx
+
+[ENABLE]
+
+-- The instruction in this address is run whenever a charged attack is initiated. It updates the currently charged stage.
+chargedAttackStageUpdaterAddress = AOBScan(originalBytes.." C1")
+
+if chargedAttackStageUpdaterAddress == nil then
+   showMessage("Couldn't find the charged attack updater bytes! Make sure that a charged attack is initiated at least once before activating this.")
+   return 0
+end
+
+chargedAttackStageUpdaterAddress = chargedAttackStageUpdaterAddress[0]
+
+autoAssemble([[
+alloc(instantChargedAttack,32)
+label(return)
+label(originalcode)
+label(exit)
+
+// ecx: the address of the current character's charged attack stages.
+// dl: the value of charged stage to be set.
+// The value set need to be exact, otherwise the attack will glitch (e.g. if the attack launches something in the air, it won't move).
+instantChargedAttack:
+cmp ecx,215C1F92     // Masamune's Hell Dragon has only two stages. This
+je twoStages         // checks if it's Masamune and set the max to two.
+cmp ecx,215C2692     // Yukimura's two charged attacks have only one stage. This
+je oneStage          // checks if it's Yukimura and set the max to one.
+mov dl,3             // Otherwise, set it to three.
+jmp originalcode
+
+twoStages:
+mov dl,2
+jmp originalcode
+
+oneStage:
+mov dl,1
+
+originalcode:
+mov [ecx],dl
+db ]]..secondOpcodeBytes..[[
+
+exit:
+jmp return
+
+]]..chargedAttackStageUpdaterAddress..[[:
+jmp instantChargedAttack
+nop 2
+return:
+]])
+
+[DISABLE]
+
+autoAssemble([[
+dealloc(instantChargedAttack)
+
+]]..chargedAttackStageUpdaterAddress..[[:
+db ]]..originalBytes)
+</AssemblerScript>
+        </CheatEntry>
+      </CheatEntries>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>183</ID>
+      <Description>"Static Addresses"</Description>
+      <Options moHideChildren="1"/>
+      <LastState Value="" RealAddress="00000000"/>
+      <GroupHeader>1</GroupHeader>
+      <CheatEntries>
+        <CheatEntry>
+          <ID>316</ID>
+          <Description>"Any Character"</Description>
+          <Options moHideChildren="1"/>
+          <LastState Value="" RealAddress="00000000"/>
+          <GroupHeader>1</GroupHeader>
+          <CheatEntries>
+            <CheatEntry>
+              <ID>228</ID>
+              <Description>"XP ingame"</Description>
+              <LastState Value="0" RealAddress="20514B48"/>
+              <VariableType>4 Bytes</VariableType>
+              <Address>20514B48</Address>
+            </CheatEntry>
+          </CheatEntries>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>181</ID>
+          <Description>"Date Masamune"</Description>
+          <Options moHideChildren="1"/>
+          <LastState Value="" RealAddress="00000000"/>
+          <GroupHeader>1</GroupHeader>
+          <CheatEntries>
+            <CheatEntry>
+              <ID>245</ID>
+              <Description>"Normal battle"</Description>
+              <Options moHideChildren="1"/>
+              <LastState Value="" RealAddress="00000000"/>
+              <GroupHeader>1</GroupHeader>
+              <CheatEntries>
+                <CheatEntry>
+                  <ID>231</ID>
+                  <Description>"HP in-battle"</Description>
+                  <LastState Value="69000" RealAddress="215C1B20"/>
+                  <VariableType>4 Bytes</VariableType>
+                  <Address>215C1B20</Address>
+                </CheatEntry>
+                <CheatEntry>
+                  <ID>233</ID>
+                  <Description>"Basara meter"</Description>
+                  <LastState Value="16000" RealAddress="215C1F00"/>
+                  <VariableType>4 Bytes</VariableType>
+                  <Address>215C1F00</Address>
+                </CheatEntry>
+                <CheatEntry>
+                  <ID>237</ID>
+                  <Description>"Drive ready level"</Description>
+                  <LastState Value="0" RealAddress="215C1F7D"/>
+                  <VariableType>Byte</VariableType>
+                  <Address>215C1F7D</Address>
+                </CheatEntry>
+                <CheatEntry>
+                  <ID>239</ID>
+                  <Description>"Gold in-battle"</Description>
+                  <LastState Value="0" RealAddress="215C1EE8"/>
+                  <VariableType>4 Bytes</VariableType>
+                  <Address>215C1EE8</Address>
+                </CheatEntry>
+                <CheatEntry>
+                  <ID>235</ID>
+                  <Description>"Kill count"</Description>
+                  <LastState Value="0" RealAddress="215C1EDC"/>
+                  <VariableType>4 Bytes</VariableType>
+                  <Address>215C1EDC</Address>
+                </CheatEntry>
+                <CheatEntry>
+                  <ID>152</ID>
+                  <Description>"Z Axis"</Description>
+                  <LastState Value="209.9039459" RealAddress="215C1604"/>
+                  <VariableType>Float</VariableType>
+                  <Address>215C1604</Address>
+                </CheatEntry>
+              </CheatEntries>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>244</ID>
+              <Description>"Tournament"</Description>
+              <Options moHideChildren="1"/>
+              <LastState Value="" RealAddress="00000000"/>
+              <GroupHeader>1</GroupHeader>
+              <CheatEntries>
+                <CheatEntry>
+                  <ID>251</ID>
+                  <Description>"HP in-battle"</Description>
+                  <LastState Value="65011720" RealAddress="21C28BA0"/>
+                  <VariableType>4 Bytes</VariableType>
+                  <Address>21C28BA0</Address>
+                </CheatEntry>
+                <CheatEntry>
+                  <ID>249</ID>
+                  <Description>"Basara meter"</Description>
+                  <LastState Value="268435582" RealAddress="21C28F80"/>
+                  <VariableType>4 Bytes</VariableType>
+                  <Address>21C28F80</Address>
+                </CheatEntry>
+                <CheatEntry>
+                  <ID>246</ID>
+                  <Description>"Drive ready level"</Description>
+                  <LastState Value="164" RealAddress="21C28FFD"/>
+                  <VariableType>Byte</VariableType>
+                  <Address>21C28FFD</Address>
+                </CheatEntry>
+                <CheatEntry>
+                  <ID>242</ID>
+                  <Description>"Kill count"</Description>
+                  <LastState Value="35661869" RealAddress="21C28F5C"/>
+                  <VariableType>4 Bytes</VariableType>
+                  <Address>21C28F5C</Address>
+                </CheatEntry>
+              </CheatEntries>
+            </CheatEntry>
+          </CheatEntries>
+        </CheatEntry>
+      </CheatEntries>
+    </CheatEntry>
+  </CheatEntries>
+  <UserdefinedSymbols/>
+</CheatTable>
