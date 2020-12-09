@@ -8,6 +8,14 @@
       <LastState Activated="1"/>
       <VariableType>Auto Assembler Script</VariableType>
       <AssemblerScript>{$lua}
+---------------------------------------------	  
+-- Sengoku Basara 2 Cheat Table
+-- Created by BLBC (hjk789)
+-- Links:	fearlessrevolution.com/memberlist.php?mode=viewprofile&amp;u=61222
+--		  	github.com/hjk789
+-- Copyright (c) BLBC, 2020+
+----------------------------------------------
+	  
 if syntaxcheck then return end
 
 [ENABLE]
@@ -30,36 +38,7 @@ CEtableAddressList.Control[1].OnSectionClick = nil  -- Disable the collumn sorti
 local thoseTwoBytes = readBytes(AOBScan("05 B8 A1 xx xx")[0],5,true)       -- There are two bytes that always change on reboot but that are required. This
 xxxx = tohex(thoseTwoBytes[4]) .. " " .. tohex(thoseTwoBytes[5])           -- scans the memory to get them and stores them in a global variable to be used by the scripts.
 
--- When the gold multiplier cheat is enabled, it multiplies the real value but the gold HUD still shows the original value.
--- I tried to change the value the earliest possible so that the HUD could get the changed value instead of the original, but still the result was the same whatever I tried.
--- The code below gets the address of the instruction that updates the gold HUD, then store in a symbol the address of the gold HUD value to be used by the gold multiplier.
--- This is needed because the HUD address is different for each stage.
 
-local goldHudUpdaterAddress = AOBScan("89 11 8B 0D 20 A0 xx xx 81 C1 6C 02 00 00 89 C8 C1 E8 0C 8B 04 85 30 xx xx xx BB xx")[0]
-
-autoAssemble([[
-alloc(getGoldHUDAddress,32)
-alloc(goldHudAddress,16)
-label(return)
-label(originalcode)
-label(exit)
-registersymbol(goldHudAddress)
-
-getGoldHUDAddress:
-mov [goldHudAddress],ecx
-
-originalcode:
-mov [ecx],edx
-db 8B 0D 20 A0 ]]..xxxx..[[
-
-exit:
-jmp return
-
-]]..goldHudUpdaterAddress..[[:
-jmp getGoldHUDAddress
-nop 3
-return:
-]])
 
 
 
@@ -132,7 +111,7 @@ db ]]..originalBytes)
         <CheatEntry>
           <ID>315</ID>
           <Description>"Infinite Basara"</Description>
-          <LastState Activated="1"/>
+          <LastState/>
           <VariableType>Auto Assembler Script</VariableType>
           <AssemblerScript>{$lua}
 if syntaxcheck then return end
@@ -244,6 +223,37 @@ local originalBytes = "89 11 "..secondOpcodeBytes
 
 [ENABLE]
 
+-- When the gold multiplier cheat is enabled, it multiplies the real value but the gold HUD still shows the original value.
+-- I tried to change the value the earliest possible so that the HUD could get the changed value instead of the original, but still the result was the same whatever I tried.
+-- The code below gets the address of the instruction that updates the gold HUD, then store in a symbol the address of the gold HUD value to be used by the gold multiplier.
+-- This is needed because the HUD address is different for each stage.
+
+local goldHudUpdaterAddress = AOBScan("89 11 8B 0D 20 A0 xx xx 81 C1 6C 02 00 00 89 C8 C1 E8 0C 8B 04 85 30 xx xx xx BB xx")[0]
+
+autoAssemble([[
+alloc(getGoldHUDAddress,32)
+alloc(goldHudAddress,16)
+label(return)
+label(originalcode)
+label(exit)
+registersymbol(goldHudAddress)
+
+getGoldHUDAddress:
+mov [goldHudAddress],ecx
+
+originalcode:
+mov [ecx],edx
+db 8B 0D 20 A0 ]]..xxxx..[[
+
+exit:
+jmp return
+
+]]..goldHudUpdaterAddress..[[:
+jmp getGoldHUDAddress
+nop 3
+return:
+]])
+
 goldUpdaterAddress = AOBScan(originalBytes.." A1")
 
 if goldUpdaterAddress == nil then
@@ -296,7 +306,7 @@ db ]]..originalBytes)
         <CheatEntry>
           <ID>296</ID>
           <Description>"Battle Drive Always Ready"</Description>
-          <LastState Activated="1"/>
+          <LastState/>
           <VariableType>Auto Assembler Script</VariableType>
           <AssemblerScript>{$lua}
 if syntaxcheck then return end
@@ -351,7 +361,7 @@ db ]]..originalBytes)
         <CheatEntry>
           <ID>295</ID>
           <Description>"Infinite Battle Drive"</Description>
-          <LastState Activated="1"/>
+          <LastState/>
           <VariableType>Auto Assembler Script</VariableType>
           <AssemblerScript>{$lua}
 if syntaxcheck then return end
@@ -438,7 +448,7 @@ db ]]..originalBytes)
         <CheatEntry>
           <ID>301</ID>
           <Description>"Instant Charged Attack"</Description>
-          <LastState Activated="1"/>
+          <LastState/>
           <VariableType>Auto Assembler Script</VariableType>
           <AssemblerScript>{$lua}
 if syntaxcheck then return end
@@ -511,22 +521,671 @@ db ]]..originalBytes)
       <ID>183</ID>
       <Description>"Static Addresses"</Description>
       <Options moHideChildren="1"/>
-      <LastState Value="" RealAddress="00000000"/>
+      <LastState Value="" Activated="1" RealAddress="00000000"/>
       <GroupHeader>1</GroupHeader>
       <CheatEntries>
         <CheatEntry>
           <ID>316</ID>
           <Description>"Any Character"</Description>
           <Options moHideChildren="1"/>
-          <LastState Value="" RealAddress="00000000"/>
+          <LastState Value="" Activated="1" RealAddress="00000000"/>
           <GroupHeader>1</GroupHeader>
           <CheatEntries>
             <CheatEntry>
               <ID>228</ID>
-              <Description>"XP ingame"</Description>
-              <LastState Value="0" RealAddress="20514B48"/>
+              <Description>"XP in-battle"</Description>
+              <LastState Value="" RealAddress="20514B48"/>
               <VariableType>4 Bytes</VariableType>
               <Address>20514B48</Address>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>335</ID>
+              <Description>"Item selection screen"</Description>
+              <Options moHideChildren="1"/>
+              <LastState Value="" Activated="1" RealAddress="00000000"/>
+              <GroupHeader>1</GroupHeader>
+              <CheatEntries>
+                <CheatEntry>
+                  <ID>334</ID>
+                  <Description>"Item slot 1"</Description>
+                  <DropDownList DescriptionOnly="1" DisplayValueAsItem="1">50:1-1 Increase health
+51:1-2 Increase attack strength
+52:1-3 Increase defense
+53:1-4 Increase the amount recovered by health replenish items
+54:1-5 Increase the amount recovered by basara replenish items
+55:2-1 Nullify fire elemental attacks
+56:2-2 Nullify lighting elemental attacks
+57:2-3 Nullify ice elemental attacks
+58:2-4 Nullify wind elemental attacks
+59:2-5 Nullify dark elemental attacks
+60:3-1 Nullify light elemental attacks
+61:3-2 Nullify all elemental attacks, however, receives more non-elemental attack damage
+72:3-3 No push-back when receiving melee attacks
+73:3-4 No push-back when receiving ranged attacks
+147:3-5 Decrease received damage by 3/4
+126:4-1 Reflect and bounce back ranged attacks
+68:4-2 Higher chance of critical attacks
+69:4-3 Longer time frame to connect between combos
+70:4-4 Combo Fever (after every 500 hits) stays 3 seconds longer
+71:4-5 Battle drive lasts 3 seconds longer
+133:5-1 Running speed increases
+67:5-2 Mounting speed increases
+141:5-3 Easier to jump when receive knock-back attacks, and easier to Just Defend (press R1 when enemy are about to strike on you)
+142:5-4 Basara damage 1.5x
+145:5-5 Every finishing move of square-button attacks will be a critical hit
+76:6-1 During a stage, trigger basara even if your energy level isn't full, ONLY ONCE
+77:6-2 During a stage, trigger battle drive even if your battle drive isn't ready, ONLY ONCE
+78:6-3 1.5x damage to all enemies, however, receive 3x damage
+84:6-4 Enemy generals' attack level decreases, however, normal soldier attack level increases
+79:6-5 Attack level raises when in critical condition (HP gauge in red)
+62:7-1 Deal more damage to shield soldiers
+63:7-2 Deal more damage to ninjas
+64:7-3 Deal more damage to big soldiers
+65:7-4 Deal more damage to cavalries
+66:7-5 Deal more damage to samurais and normal soldiers. Equipping all 5 items will increase the damage level to all these enemy types greatly
+81:8-1 Basara attacks combo hits+1 (so every hit counts as 2 hits when performing basaras)
+82:8-2 When HP and Energy guage are full, combo hits+1
+129:8-3 Combo hits+1, cannot raise Energy level
+131:8-4 Combo hits+1, cannot guard or evade
+132:8-5 Combo hits+1, harder to maintain combo counts
+139:9-1 Mounted attacks combo hits+1
+130:9-2 Attack combo hits+1, receive 3x damage
+140:9-3 Attack combo hits+2, receive 5x damage
+80:9-4 Makes you smell bad so enemies won't come near you
+146:9-5 Makes you smell good to make enemies sleepy
+75:10-1 Raise knock-back attack levels
+143:10-2 Make knock-back attacks like a home-run bat
+134:10-3 Raise weapon/armor level to the MAX in battle
+136:10-4 Combo counts remains when use mounted attacks
+138:10-5 Transform the replenish items you receive every 50 kills to a experience 2x item (that cat doll)
+93:11-1 +1 experience for every kill
+94:11-2 +5 experience for every kill
+100:11-3 Transform ALL chests to golds, including those who carry the red box
+98:11-4 Hide your HP bar during battle, receive 0.5x more towards your evaluation at the end of the battle
+99:11-5 Receive a lot more gold, however, gold will be cut half when you receive damage
+122:12-1 For ONCE at the end of the battle, you can re-shuffle the items/weapons/armors you received during battle
+123:12-2 For ONCE at the end of the battle, you can re-shuffle the level of items/weapons/armors you received during battle
+97:12-3 If you achieve 1000 hits in a stage, you'll receive a precious item chest (not effective in Grand Tournament)
+96:12-4 If you achieve 500 kills in a stage, you'll receive a precious weapon chest (not effective in Grand Tournament)
+95:12-5 2x experience for special achievements (so if you get 1000 experience for completing the special achievement, you'll get 2000 instead)
+150:13-1 Make the theme song the in-battle BGM
+124:13-2 Make the ending song the in-battle BGM
+125:13-3 Make the current character's theme music as the in-battle BGM
+127:13-4 Receive supports from your allies
+128:13-5 A beautiful lady will be giving you basara replenish items in intervals of time
+85:14-1 Start the battle with basara energy full
+86:14-2 Start the battle with battle drive level ONE ready
+87:14-3 HP slowly replenishes, replenish speed raises when with allies, cannot replenish during guard (not effective in Grand Tournament)
+88:14-4 Basara energy slowly replenishes, replenish speed raises when with allies, cannot replenish during guard (not effective in Grand Tournament)
+137:14-5 HP level replenished fully at the start of each floor in Grand Tournament (but not effective in normal battles)
+89:15-1 Revive once when KOed
+83:15-2 All enemy HP levels 2x
+148:15-3 Allies will not follow you
+144:15-4 After clearing a stage, every surviving allied general generates 300 experience
+101:15-5 Vibrates and illuminates when a golden special chest is near (story mode and Musashi's Conquest ONLY)
+102:16-1 Raises luck, equip all 5 items for greater effects
+103:16-2 Raises luck, equip all 5 items for greater effects
+104:16-3 Raises luck, equip all 5 items for greater effects
+105:16-4 Raises luck, equip all 5 items for greater effects
+106:16-5 Raises luck, equip all 5 items for greater effects
+107:17-1 Receive 1 extra normal item/weapon chest after the stage (not effective in Grand Tournament), equip all 5 items for greater effects.
+108:17-2 Receive 1 extra normal item/weapon chest after the stage (not effective in Grand Tournament), equip all 5 items for greater effects.
+109:17-3 Receive 1 extra normal item/weapon chest after the stage (not effective in Grand Tournament), equip all 5 items for greater effects.
+110:17-4 Receive 1 extra normal item/weapon chest after the stage (not effective in Grand Tournament), equip all 5 items for greater effects.
+111:17-5 Receive 1 extra normal item/weapon chest after the stage (not effective in Grand Tournament), equip all 5 items for greater effects.
+112:18-1 Receive 500 extra golds after the stage, equip all 5 items for greater effects
+113:18-2 Receive 500 extra golds after the stage, equip all 5 items for greater effects
+114:18-3 Receive 500 extra golds after the stage, equip all 5 items for greater effects
+115:18-4 Receive 500 extra golds after the stage, equip all 5 items for greater effects
+116:18-5 Receive 500 extra golds after the stage, equip all 5 items for greater effects
+117:19-1 Receive 1000 extra experience points after the stage, equip all 5 items for greater effects
+118:19-2 Receive 1000 extra experience points after the stage, equip all 5 items for greater effects
+119:19-3 Receive 1000 extra experience points after the stage, equip all 5 items for greater effects
+120:19-4 Receive 1000 extra experience points after the stage, equip all 5 items for greater effects
+121:19-5 Receive 1000 extra experience points after the stage, equip all 5 items for greater effects
+90:20-1 Skill level 1 when equipped only 1 of this item, but raised to level 2 when equipped 2 of these items, and level max when equipped 3 of these items
+91:20-2 Skill level 1 when equipped only 1 of this item, but raised to level 2 when equipped 2 of these items, and level max when equipped 3 of these items
+92:20-3 Skill level 1 when equipped only 1 of this item, but raised to level 2 when equipped 2 of these items, and level max when equipped 3 of these items
+2:20-4 Masamune ONLY, unlimited 6 katana usage, however, lowers defense level, cannot guard or evade
+3:20-5 Yukimura ONLY, fire elemental attacks attached to weapon, battle drive level increase when in critical condition
+23:21-1 Keiji ONLY, make enemy dances when taunting
+20:21-2 Hideyoshi ONLY, able to pick up allies with his skills
+4:21-3 Nobunaga ONLY, transfer all defense to attacks, defense becomes 0
+18:21-4 Motochika ONLY, receive allied supports when in critical condition, also more critical attacks
+16:21-5 Kasuga ONLY, clones herself and joins attack, diminishes when in critical condition
+8:22-1 Ranmaru ONLY, battle drive lasts 1 minute at the beginning of the stage, afterwards, HP level decreases 75%
+10:22-2 Sasuke ONLY, auto-triggers basara when in critical condition, HP replenishes slowly
+15:22-3 Matsu ONLY, animal-based, basara, and mounted attacks damage increases
+21:22-4 Hanbei ONLY, HP decreases slowly, receive more gold
+11:22-5 Mitsuhide ONLY, auto-basara+revive after KOed
+17:23-1 Mouri ONLY, cannot be interrupted when placing traps skills
+7:23-2 Kenshin ONLY, throw roses when taunting, ice-elemental
+13:23-3 Shimazu ONLY, when receiving damages, your attack hits increase
+6:23-4 Shingen ONLY, hits+5 to skill-based attacks in his basara
+1:23-5 Toshiie ONLY, receive onigiris from Matsu when they are together, also raise the attack level
+14:24-1 Honda ONLY, normal projectiles becomes electric-plasma attacks
+5:24-2 Nohime ONLY, normal square-based attacks become melee moves
+12:24-3 Zabii ONLY, killed enemies becomes a practitioner, receive more gold depending on how many enemies you've transformed
+9:24-4 Itsuki ONLY, goes to battle without the hammer, cannot guard or evade
+22:24-5 Musashi ONLY, taunting attack level raises
+</DropDownList>
+                  <LastState Value="" RealAddress="204CA270"/>
+                  <VariableType>Byte</VariableType>
+                  <Address>204CA270</Address>
+                </CheatEntry>
+                <CheatEntry>
+                  <ID>332</ID>
+                  <Description>"Item slot 2"</Description>
+                  <DropDownList DescriptionOnly="1" DisplayValueAsItem="1">50:1-1 Increase health
+51:1-2 Increase attack strength
+52:1-3 Increase defense
+53:1-4 Increase the amount recovered by health replenish items
+54:1-5 Increase the amount recovered by basara replenish items
+55:2-1 Nullify fire elemental attacks
+56:2-2 Nullify lighting elemental attacks
+57:2-3 Nullify ice elemental attacks
+58:2-4 Nullify wind elemental attacks
+59:2-5 Nullify dark elemental attacks
+60:3-1 Nullify light elemental attacks
+61:3-2 Nullify all elemental attacks, however, receives more non-elemental attack damage
+72:3-3 No push-back when receiving melee attacks
+73:3-4 No push-back when receiving ranged attacks
+147:3-5 Decrease received damage by 3/4
+126:4-1 Reflect and bounce back ranged attacks
+68:4-2 Higher chance of critical attacks
+69:4-3 Longer time frame to connect between combos
+70:4-4 Combo Fever (after every 500 hits) stays 3 seconds longer
+71:4-5 Battle drive lasts 3 seconds longer
+133:5-1 Running speed increases
+67:5-2 Mounting speed increases
+141:5-3 Easier to jump when receive knock-back attacks, and easier to Just Defend (press R1 when enemy are about to strike on you)
+142:5-4 Basara damage 1.5x
+145:5-5 Every finishing move of square-button attacks will be a critical hit
+76:6-1 During a stage, trigger basara even if your energy level isn't full, ONLY ONCE
+77:6-2 During a stage, trigger battle drive even if your battle drive isn't ready, ONLY ONCE
+78:6-3 1.5x damage to all enemies, however, receive 3x damage
+84:6-4 Enemy generals' attack level decreases, however, normal soldier attack level increases
+79:6-5 Attack level raises when in critical condition (HP gauge in red)
+62:7-1 Deal more damage to shield soldiers
+63:7-2 Deal more damage to ninjas
+64:7-3 Deal more damage to big soldiers
+65:7-4 Deal more damage to cavalries
+66:7-5 Deal more damage to samurais and normal soldiers. Equipping all 5 items will increase the damage level to all these enemy types greatly
+81:8-1 Basara attacks combo hits+1 (so every hit counts as 2 hits when performing basaras)
+82:8-2 When HP and Energy guage are full, combo hits+1
+129:8-3 Combo hits+1, cannot raise Energy level
+131:8-4 Combo hits+1, cannot guard or evade
+132:8-5 Combo hits+1, harder to maintain combo counts
+139:9-1 Mounted attacks combo hits+1
+130:9-2 Attack combo hits+1, receive 3x damage
+140:9-3 Attack combo hits+2, receive 5x damage
+80:9-4 Makes you smell bad so enemies won't come near you
+146:9-5 Makes you smell good to make enemies sleepy
+75:10-1 Raise knock-back attack levels
+143:10-2 Make knock-back attacks like a home-run bat
+134:10-3 Raise weapon/armor level to the MAX in battle
+136:10-4 Combo counts remains when use mounted attacks
+138:10-5 Transform the replenish items you receive every 50 kills to a experience 2x item (that cat doll)
+93:11-1 +1 experience for every kill
+94:11-2 +5 experience for every kill
+100:11-3 Transform ALL chests to golds, including those who carry the red box
+98:11-4 Hide your HP bar during battle, receive 0.5x more towards your evaluation at the end of the battle
+99:11-5 Receive a lot more gold, however, gold will be cut half when you receive damage
+122:12-1 For ONCE at the end of the battle, you can re-shuffle the items/weapons/armors you received during battle
+123:12-2 For ONCE at the end of the battle, you can re-shuffle the level of items/weapons/armors you received during battle
+97:12-3 If you achieve 1000 hits in a stage, you'll receive a precious item chest (not effective in Grand Tournament)
+96:12-4 If you achieve 500 kills in a stage, you'll receive a precious weapon chest (not effective in Grand Tournament)
+95:12-5 2x experience for special achievements (so if you get 1000 experience for completing the special achievement, you'll get 2000 instead)
+150:13-1 Make the theme song the in-battle BGM
+124:13-2 Make the ending song the in-battle BGM
+125:13-3 Make the current character's theme music as the in-battle BGM
+127:13-4 Receive supports from your allies
+128:13-5 A beautiful lady will be giving you basara replenish items in intervals of time
+85:14-1 Start the battle with basara energy full
+86:14-2 Start the battle with battle drive level ONE ready
+87:14-3 HP slowly replenishes, replenish speed raises when with allies, cannot replenish during guard (not effective in Grand Tournament)
+88:14-4 Basara energy slowly replenishes, replenish speed raises when with allies, cannot replenish during guard (not effective in Grand Tournament)
+137:14-5 HP level replenished fully at the start of each floor in Grand Tournament (but not effective in normal battles)
+89:15-1 Revive once when KOed
+83:15-2 All enemy HP levels 2x
+148:15-3 Allies will not follow you
+144:15-4 After clearing a stage, every surviving allied general generates 300 experience
+101:15-5 Vibrates and illuminates when a golden special chest is near (story mode and Musashi's Conquest ONLY)
+102:16-1 Raises luck, equip all 5 items for greater effects
+103:16-2 Raises luck, equip all 5 items for greater effects
+104:16-3 Raises luck, equip all 5 items for greater effects
+105:16-4 Raises luck, equip all 5 items for greater effects
+106:16-5 Raises luck, equip all 5 items for greater effects
+107:17-1 Receive 1 extra normal item/weapon chest after the stage (not effective in Grand Tournament), equip all 5 items for greater effects.
+108:17-2 Receive 1 extra normal item/weapon chest after the stage (not effective in Grand Tournament), equip all 5 items for greater effects.
+109:17-3 Receive 1 extra normal item/weapon chest after the stage (not effective in Grand Tournament), equip all 5 items for greater effects.
+110:17-4 Receive 1 extra normal item/weapon chest after the stage (not effective in Grand Tournament), equip all 5 items for greater effects.
+111:17-5 Receive 1 extra normal item/weapon chest after the stage (not effective in Grand Tournament), equip all 5 items for greater effects.
+112:18-1 Receive 500 extra golds after the stage, equip all 5 items for greater effects
+113:18-2 Receive 500 extra golds after the stage, equip all 5 items for greater effects
+114:18-3 Receive 500 extra golds after the stage, equip all 5 items for greater effects
+115:18-4 Receive 500 extra golds after the stage, equip all 5 items for greater effects
+116:18-5 Receive 500 extra golds after the stage, equip all 5 items for greater effects
+117:19-1 Receive 1000 extra experience points after the stage, equip all 5 items for greater effects
+118:19-2 Receive 1000 extra experience points after the stage, equip all 5 items for greater effects
+119:19-3 Receive 1000 extra experience points after the stage, equip all 5 items for greater effects
+120:19-4 Receive 1000 extra experience points after the stage, equip all 5 items for greater effects
+121:19-5 Receive 1000 extra experience points after the stage, equip all 5 items for greater effects
+90:20-1 Skill level 1 when equipped only 1 of this item, but raised to level 2 when equipped 2 of these items, and level max when equipped 3 of these items
+91:20-2 Skill level 1 when equipped only 1 of this item, but raised to level 2 when equipped 2 of these items, and level max when equipped 3 of these items
+92:20-3 Skill level 1 when equipped only 1 of this item, but raised to level 2 when equipped 2 of these items, and level max when equipped 3 of these items
+2:20-4 Masamune ONLY, unlimited 6 katana usage, however, lowers defense level, cannot guard or evade
+3:20-5 Yukimura ONLY, fire elemental attacks attached to weapon, battle drive level increase when in critical condition
+23:21-1 Keiji ONLY, make enemy dances when taunting
+20:21-2 Hideyoshi ONLY, able to pick up allies with his skills
+4:21-3 Nobunaga ONLY, transfer all defense to attacks, defense becomes 0
+18:21-4 Motochika ONLY, receive allied supports when in critical condition, also more critical attacks
+16:21-5 Kasuga ONLY, clones herself and joins attack, diminishes when in critical condition
+8:22-1 Ranmaru ONLY, battle drive lasts 1 minute at the beginning of the stage, afterwards, HP level decreases 75%
+10:22-2 Sasuke ONLY, auto-triggers basara when in critical condition, HP replenishes slowly
+15:22-3 Matsu ONLY, animal-based, basara, and mounted attacks damage increases
+21:22-4 Hanbei ONLY, HP decreases slowly, receive more gold
+11:22-5 Mitsuhide ONLY, auto-basara+revive after KOed
+17:23-1 Mouri ONLY, cannot be interrupted when placing traps skills
+7:23-2 Kenshin ONLY, throw roses when taunting, ice-elemental
+13:23-3 Shimazu ONLY, when receiving damages, your attack hits increase
+6:23-4 Shingen ONLY, hits+5 to skill-based attacks in his basara
+1:23-5 Toshiie ONLY, receive onigiris from Matsu when they are together, also raise the attack level
+14:24-1 Honda ONLY, normal projectiles becomes electric-plasma attacks
+5:24-2 Nohime ONLY, normal square-based attacks become melee moves
+12:24-3 Zabii ONLY, killed enemies becomes a practitioner, receive more gold depending on how many enemies you've transformed
+9:24-4 Itsuki ONLY, goes to battle without the hammer, cannot guard or evade
+22:24-5 Musashi ONLY, taunting attack level raises
+</DropDownList>
+                  <LastState Value="" RealAddress="204CA271"/>
+                  <VariableType>Byte</VariableType>
+                  <Address>204CA271</Address>
+                </CheatEntry>
+                <CheatEntry>
+                  <ID>331</ID>
+                  <Description>"Item slot 3"</Description>
+                  <DropDownList DescriptionOnly="1" DisplayValueAsItem="1">50:1-1 Increase health
+51:1-2 Increase attack strength
+52:1-3 Increase defense
+53:1-4 Increase the amount recovered by health replenish items
+54:1-5 Increase the amount recovered by basara replenish items
+55:2-1 Nullify fire elemental attacks
+56:2-2 Nullify lighting elemental attacks
+57:2-3 Nullify ice elemental attacks
+58:2-4 Nullify wind elemental attacks
+59:2-5 Nullify dark elemental attacks
+60:3-1 Nullify light elemental attacks
+61:3-2 Nullify all elemental attacks, however, receives more non-elemental attack damage
+72:3-3 No push-back when receiving melee attacks
+73:3-4 No push-back when receiving ranged attacks
+147:3-5 Decrease received damage by 3/4
+126:4-1 Reflect and bounce back ranged attacks
+68:4-2 Higher chance of critical attacks
+69:4-3 Longer time frame to connect between combos
+70:4-4 Combo Fever (after every 500 hits) stays 3 seconds longer
+71:4-5 Battle drive lasts 3 seconds longer
+133:5-1 Running speed increases
+67:5-2 Mounting speed increases
+141:5-3 Easier to jump when receive knock-back attacks, and easier to Just Defend (press R1 when enemy are about to strike on you)
+142:5-4 Basara damage 1.5x
+145:5-5 Every finishing move of square-button attacks will be a critical hit
+76:6-1 During a stage, trigger basara even if your energy level isn't full, ONLY ONCE
+77:6-2 During a stage, trigger battle drive even if your battle drive isn't ready, ONLY ONCE
+78:6-3 1.5x damage to all enemies, however, receive 3x damage
+84:6-4 Enemy generals' attack level decreases, however, normal soldier attack level increases
+79:6-5 Attack level raises when in critical condition (HP gauge in red)
+62:7-1 Deal more damage to shield soldiers
+63:7-2 Deal more damage to ninjas
+64:7-3 Deal more damage to big soldiers
+65:7-4 Deal more damage to cavalries
+66:7-5 Deal more damage to samurais and normal soldiers. Equipping all 5 items will increase the damage level to all these enemy types greatly
+81:8-1 Basara attacks combo hits+1 (so every hit counts as 2 hits when performing basaras)
+82:8-2 When HP and Energy guage are full, combo hits+1
+129:8-3 Combo hits+1, cannot raise Energy level
+131:8-4 Combo hits+1, cannot guard or evade
+132:8-5 Combo hits+1, harder to maintain combo counts
+139:9-1 Mounted attacks combo hits+1
+130:9-2 Attack combo hits+1, receive 3x damage
+140:9-3 Attack combo hits+2, receive 5x damage
+80:9-4 Makes you smell bad so enemies won't come near you
+146:9-5 Makes you smell good to make enemies sleepy
+75:10-1 Raise knock-back attack levels
+143:10-2 Make knock-back attacks like a home-run bat
+134:10-3 Raise weapon/armor level to the MAX in battle
+136:10-4 Combo counts remains when use mounted attacks
+138:10-5 Transform the replenish items you receive every 50 kills to a experience 2x item (that cat doll)
+93:11-1 +1 experience for every kill
+94:11-2 +5 experience for every kill
+100:11-3 Transform ALL chests to golds, including those who carry the red box
+98:11-4 Hide your HP bar during battle, receive 0.5x more towards your evaluation at the end of the battle
+99:11-5 Receive a lot more gold, however, gold will be cut half when you receive damage
+122:12-1 For ONCE at the end of the battle, you can re-shuffle the items/weapons/armors you received during battle
+123:12-2 For ONCE at the end of the battle, you can re-shuffle the level of items/weapons/armors you received during battle
+97:12-3 If you achieve 1000 hits in a stage, you'll receive a precious item chest (not effective in Grand Tournament)
+96:12-4 If you achieve 500 kills in a stage, you'll receive a precious weapon chest (not effective in Grand Tournament)
+95:12-5 2x experience for special achievements (so if you get 1000 experience for completing the special achievement, you'll get 2000 instead)
+150:13-1 Make the theme song the in-battle BGM
+124:13-2 Make the ending song the in-battle BGM
+125:13-3 Make the current character's theme music as the in-battle BGM
+127:13-4 Receive supports from your allies
+128:13-5 A beautiful lady will be giving you basara replenish items in intervals of time
+85:14-1 Start the battle with basara energy full
+86:14-2 Start the battle with battle drive level ONE ready
+87:14-3 HP slowly replenishes, replenish speed raises when with allies, cannot replenish during guard (not effective in Grand Tournament)
+88:14-4 Basara energy slowly replenishes, replenish speed raises when with allies, cannot replenish during guard (not effective in Grand Tournament)
+137:14-5 HP level replenished fully at the start of each floor in Grand Tournament (but not effective in normal battles)
+89:15-1 Revive once when KOed
+83:15-2 All enemy HP levels 2x
+148:15-3 Allies will not follow you
+144:15-4 After clearing a stage, every surviving allied general generates 300 experience
+101:15-5 Vibrates and illuminates when a golden special chest is near (story mode and Musashi's Conquest ONLY)
+102:16-1 Raises luck, equip all 5 items for greater effects
+103:16-2 Raises luck, equip all 5 items for greater effects
+104:16-3 Raises luck, equip all 5 items for greater effects
+105:16-4 Raises luck, equip all 5 items for greater effects
+106:16-5 Raises luck, equip all 5 items for greater effects
+107:17-1 Receive 1 extra normal item/weapon chest after the stage (not effective in Grand Tournament), equip all 5 items for greater effects.
+108:17-2 Receive 1 extra normal item/weapon chest after the stage (not effective in Grand Tournament), equip all 5 items for greater effects.
+109:17-3 Receive 1 extra normal item/weapon chest after the stage (not effective in Grand Tournament), equip all 5 items for greater effects.
+110:17-4 Receive 1 extra normal item/weapon chest after the stage (not effective in Grand Tournament), equip all 5 items for greater effects.
+111:17-5 Receive 1 extra normal item/weapon chest after the stage (not effective in Grand Tournament), equip all 5 items for greater effects.
+112:18-1 Receive 500 extra golds after the stage, equip all 5 items for greater effects
+113:18-2 Receive 500 extra golds after the stage, equip all 5 items for greater effects
+114:18-3 Receive 500 extra golds after the stage, equip all 5 items for greater effects
+115:18-4 Receive 500 extra golds after the stage, equip all 5 items for greater effects
+116:18-5 Receive 500 extra golds after the stage, equip all 5 items for greater effects
+117:19-1 Receive 1000 extra experience points after the stage, equip all 5 items for greater effects
+118:19-2 Receive 1000 extra experience points after the stage, equip all 5 items for greater effects
+119:19-3 Receive 1000 extra experience points after the stage, equip all 5 items for greater effects
+120:19-4 Receive 1000 extra experience points after the stage, equip all 5 items for greater effects
+121:19-5 Receive 1000 extra experience points after the stage, equip all 5 items for greater effects
+90:20-1 Skill level 1 when equipped only 1 of this item, but raised to level 2 when equipped 2 of these items, and level max when equipped 3 of these items
+91:20-2 Skill level 1 when equipped only 1 of this item, but raised to level 2 when equipped 2 of these items, and level max when equipped 3 of these items
+92:20-3 Skill level 1 when equipped only 1 of this item, but raised to level 2 when equipped 2 of these items, and level max when equipped 3 of these items
+2:20-4 Masamune ONLY, unlimited 6 katana usage, however, lowers defense level, cannot guard or evade
+3:20-5 Yukimura ONLY, fire elemental attacks attached to weapon, battle drive level increase when in critical condition
+23:21-1 Keiji ONLY, make enemy dances when taunting
+20:21-2 Hideyoshi ONLY, able to pick up allies with his skills
+4:21-3 Nobunaga ONLY, transfer all defense to attacks, defense becomes 0
+18:21-4 Motochika ONLY, receive allied supports when in critical condition, also more critical attacks
+16:21-5 Kasuga ONLY, clones herself and joins attack, diminishes when in critical condition
+8:22-1 Ranmaru ONLY, battle drive lasts 1 minute at the beginning of the stage, afterwards, HP level decreases 75%
+10:22-2 Sasuke ONLY, auto-triggers basara when in critical condition, HP replenishes slowly
+15:22-3 Matsu ONLY, animal-based, basara, and mounted attacks damage increases
+21:22-4 Hanbei ONLY, HP decreases slowly, receive more gold
+11:22-5 Mitsuhide ONLY, auto-basara+revive after KOed
+17:23-1 Mouri ONLY, cannot be interrupted when placing traps skills
+7:23-2 Kenshin ONLY, throw roses when taunting, ice-elemental
+13:23-3 Shimazu ONLY, when receiving damages, your attack hits increase
+6:23-4 Shingen ONLY, hits+5 to skill-based attacks in his basara
+1:23-5 Toshiie ONLY, receive onigiris from Matsu when they are together, also raise the attack level
+14:24-1 Honda ONLY, normal projectiles becomes electric-plasma attacks
+5:24-2 Nohime ONLY, normal square-based attacks become melee moves
+12:24-3 Zabii ONLY, killed enemies becomes a practitioner, receive more gold depending on how many enemies you've transformed
+9:24-4 Itsuki ONLY, goes to battle without the hammer, cannot guard or evade
+22:24-5 Musashi ONLY, taunting attack level raises
+</DropDownList>
+                  <LastState Value="" RealAddress="204CA272"/>
+                  <VariableType>Byte</VariableType>
+                  <Address>204CA272</Address>
+                </CheatEntry>
+                <CheatEntry>
+                  <ID>330</ID>
+                  <Description>"Item slot 4"</Description>
+                  <DropDownList DescriptionOnly="1" DisplayValueAsItem="1">50:1-1 Increase health
+51:1-2 Increase attack strength
+52:1-3 Increase defense
+53:1-4 Increase the amount recovered by health replenish items
+54:1-5 Increase the amount recovered by basara replenish items
+55:2-1 Nullify fire elemental attacks
+56:2-2 Nullify lighting elemental attacks
+57:2-3 Nullify ice elemental attacks
+58:2-4 Nullify wind elemental attacks
+59:2-5 Nullify dark elemental attacks
+60:3-1 Nullify light elemental attacks
+61:3-2 Nullify all elemental attacks, however, receives more non-elemental attack damage
+72:3-3 No push-back when receiving melee attacks
+73:3-4 No push-back when receiving ranged attacks
+147:3-5 Decrease received damage by 3/4
+126:4-1 Reflect and bounce back ranged attacks
+68:4-2 Higher chance of critical attacks
+69:4-3 Longer time frame to connect between combos
+70:4-4 Combo Fever (after every 500 hits) stays 3 seconds longer
+71:4-5 Battle drive lasts 3 seconds longer
+133:5-1 Running speed increases
+67:5-2 Mounting speed increases
+141:5-3 Easier to jump when receive knock-back attacks, and easier to Just Defend (press R1 when enemy are about to strike on you)
+142:5-4 Basara damage 1.5x
+145:5-5 Every finishing move of square-button attacks will be a critical hit
+76:6-1 During a stage, trigger basara even if your energy level isn't full, ONLY ONCE
+77:6-2 During a stage, trigger battle drive even if your battle drive isn't ready, ONLY ONCE
+78:6-3 1.5x damage to all enemies, however, receive 3x damage
+84:6-4 Enemy generals' attack level decreases, however, normal soldier attack level increases
+79:6-5 Attack level raises when in critical condition (HP gauge in red)
+62:7-1 Deal more damage to shield soldiers
+63:7-2 Deal more damage to ninjas
+64:7-3 Deal more damage to big soldiers
+65:7-4 Deal more damage to cavalries
+66:7-5 Deal more damage to samurais and normal soldiers. Equipping all 5 items will increase the damage level to all these enemy types greatly
+81:8-1 Basara attacks combo hits+1 (so every hit counts as 2 hits when performing basaras)
+82:8-2 When HP and Energy guage are full, combo hits+1
+129:8-3 Combo hits+1, cannot raise Energy level
+131:8-4 Combo hits+1, cannot guard or evade
+132:8-5 Combo hits+1, harder to maintain combo counts
+139:9-1 Mounted attacks combo hits+1
+130:9-2 Attack combo hits+1, receive 3x damage
+140:9-3 Attack combo hits+2, receive 5x damage
+80:9-4 Makes you smell bad so enemies won't come near you
+146:9-5 Makes you smell good to make enemies sleepy
+75:10-1 Raise knock-back attack levels
+143:10-2 Make knock-back attacks like a home-run bat
+134:10-3 Raise weapon/armor level to the MAX in battle
+136:10-4 Combo counts remains when use mounted attacks
+138:10-5 Transform the replenish items you receive every 50 kills to a experience 2x item (that cat doll)
+93:11-1 +1 experience for every kill
+94:11-2 +5 experience for every kill
+100:11-3 Transform ALL chests to golds, including those who carry the red box
+98:11-4 Hide your HP bar during battle, receive 0.5x more towards your evaluation at the end of the battle
+99:11-5 Receive a lot more gold, however, gold will be cut half when you receive damage
+122:12-1 For ONCE at the end of the battle, you can re-shuffle the items/weapons/armors you received during battle
+123:12-2 For ONCE at the end of the battle, you can re-shuffle the level of items/weapons/armors you received during battle
+97:12-3 If you achieve 1000 hits in a stage, you'll receive a precious item chest (not effective in Grand Tournament)
+96:12-4 If you achieve 500 kills in a stage, you'll receive a precious weapon chest (not effective in Grand Tournament)
+95:12-5 2x experience for special achievements (so if you get 1000 experience for completing the special achievement, you'll get 2000 instead)
+150:13-1 Make the theme song the in-battle BGM
+124:13-2 Make the ending song the in-battle BGM
+125:13-3 Make the current character's theme music as the in-battle BGM
+127:13-4 Receive supports from your allies
+128:13-5 A beautiful lady will be giving you basara replenish items in intervals of time
+85:14-1 Start the battle with basara energy full
+86:14-2 Start the battle with battle drive level ONE ready
+87:14-3 HP slowly replenishes, replenish speed raises when with allies, cannot replenish during guard (not effective in Grand Tournament)
+88:14-4 Basara energy slowly replenishes, replenish speed raises when with allies, cannot replenish during guard (not effective in Grand Tournament)
+137:14-5 HP level replenished fully at the start of each floor in Grand Tournament (but not effective in normal battles)
+89:15-1 Revive once when KOed
+83:15-2 All enemy HP levels 2x
+148:15-3 Allies will not follow you
+144:15-4 After clearing a stage, every surviving allied general generates 300 experience
+101:15-5 Vibrates and illuminates when a golden special chest is near (story mode and Musashi's Conquest ONLY)
+102:16-1 Raises luck, equip all 5 items for greater effects
+103:16-2 Raises luck, equip all 5 items for greater effects
+104:16-3 Raises luck, equip all 5 items for greater effects
+105:16-4 Raises luck, equip all 5 items for greater effects
+106:16-5 Raises luck, equip all 5 items for greater effects
+107:17-1 Receive 1 extra normal item/weapon chest after the stage (not effective in Grand Tournament), equip all 5 items for greater effects.
+108:17-2 Receive 1 extra normal item/weapon chest after the stage (not effective in Grand Tournament), equip all 5 items for greater effects.
+109:17-3 Receive 1 extra normal item/weapon chest after the stage (not effective in Grand Tournament), equip all 5 items for greater effects.
+110:17-4 Receive 1 extra normal item/weapon chest after the stage (not effective in Grand Tournament), equip all 5 items for greater effects.
+111:17-5 Receive 1 extra normal item/weapon chest after the stage (not effective in Grand Tournament), equip all 5 items for greater effects.
+112:18-1 Receive 500 extra golds after the stage, equip all 5 items for greater effects
+113:18-2 Receive 500 extra golds after the stage, equip all 5 items for greater effects
+114:18-3 Receive 500 extra golds after the stage, equip all 5 items for greater effects
+115:18-4 Receive 500 extra golds after the stage, equip all 5 items for greater effects
+116:18-5 Receive 500 extra golds after the stage, equip all 5 items for greater effects
+117:19-1 Receive 1000 extra experience points after the stage, equip all 5 items for greater effects
+118:19-2 Receive 1000 extra experience points after the stage, equip all 5 items for greater effects
+119:19-3 Receive 1000 extra experience points after the stage, equip all 5 items for greater effects
+120:19-4 Receive 1000 extra experience points after the stage, equip all 5 items for greater effects
+121:19-5 Receive 1000 extra experience points after the stage, equip all 5 items for greater effects
+90:20-1 Skill level 1 when equipped only 1 of this item, but raised to level 2 when equipped 2 of these items, and level max when equipped 3 of these items
+91:20-2 Skill level 1 when equipped only 1 of this item, but raised to level 2 when equipped 2 of these items, and level max when equipped 3 of these items
+92:20-3 Skill level 1 when equipped only 1 of this item, but raised to level 2 when equipped 2 of these items, and level max when equipped 3 of these items
+2:20-4 Masamune ONLY, unlimited 6 katana usage, however, lowers defense level, cannot guard or evade
+3:20-5 Yukimura ONLY, fire elemental attacks attached to weapon, battle drive level increase when in critical condition
+23:21-1 Keiji ONLY, make enemy dances when taunting
+20:21-2 Hideyoshi ONLY, able to pick up allies with his skills
+4:21-3 Nobunaga ONLY, transfer all defense to attacks, defense becomes 0
+18:21-4 Motochika ONLY, receive allied supports when in critical condition, also more critical attacks
+16:21-5 Kasuga ONLY, clones herself and joins attack, diminishes when in critical condition
+8:22-1 Ranmaru ONLY, battle drive lasts 1 minute at the beginning of the stage, afterwards, HP level decreases 75%
+10:22-2 Sasuke ONLY, auto-triggers basara when in critical condition, HP replenishes slowly
+15:22-3 Matsu ONLY, animal-based, basara, and mounted attacks damage increases
+21:22-4 Hanbei ONLY, HP decreases slowly, receive more gold
+11:22-5 Mitsuhide ONLY, auto-basara+revive after KOed
+17:23-1 Mouri ONLY, cannot be interrupted when placing traps skills
+7:23-2 Kenshin ONLY, throw roses when taunting, ice-elemental
+13:23-3 Shimazu ONLY, when receiving damages, your attack hits increase
+6:23-4 Shingen ONLY, hits+5 to skill-based attacks in his basara
+1:23-5 Toshiie ONLY, receive onigiris from Matsu when they are together, also raise the attack level
+14:24-1 Honda ONLY, normal projectiles becomes electric-plasma attacks
+5:24-2 Nohime ONLY, normal square-based attacks become melee moves
+12:24-3 Zabii ONLY, killed enemies becomes a practitioner, receive more gold depending on how many enemies you've transformed
+9:24-4 Itsuki ONLY, goes to battle without the hammer, cannot guard or evade
+22:24-5 Musashi ONLY, taunting attack level raises
+</DropDownList>
+                  <LastState Value="" RealAddress="204CA273"/>
+                  <VariableType>Byte</VariableType>
+                  <Address>204CA273</Address>
+                </CheatEntry>
+                <CheatEntry>
+                  <ID>498</ID>
+                  <Description>"Item slot 5"</Description>
+                  <DropDownList DescriptionOnly="1" DisplayValueAsItem="1">50:1-1 Increase health 
+51:1-2 Increase attack strength
+52:1-3 Increase defense 
+53:1-4 Increase the amount recovered by health replenish items
+54:1-5 Increase the amount recovered by basara replenish items
+55:2-1 Nullify fire elemental attacks
+56:2-2 Nullify lighting elemental attacks
+57:2-3 Nullify ice elemental attacks
+58:2-4 Nullify wind elemental attacks
+59:2-5 Nullify dark elemental attacks
+60:3-1 Nullify light elemental attacks
+61:3-2 Nullify all elemental attacks, however, receives more non-elemental attack damage
+72:3-3 No push-back when receiving melee attacks
+73:3-4 No push-back when receiving ranged attacks
+147:3-5 Decrease received damage by 3/4
+126:4-1 Reflect and bounce back ranged attacks
+68:4-2 Higher chance of critical attacks
+69:4-3 Longer time frame to connect between combos
+70:4-4 Combo Fever (after every 500 hits) stays 3 seconds longer
+71:4-5 Battle drive lasts 3 seconds longer
+133:5-1 Running speed increases
+67:5-2 Mounting speed increases
+141:5-3 Easier to jump when receive knock-back attacks, and easier to Just Defend (press R1 when enemy are about to strike on you)
+142:5-4 Basara damage 1.5x
+145:5-5 Every finishing move of square-button attacks will be a critical hit
+76:6-1 During a stage, trigger basara even if your energy level isn't full, ONLY ONCE
+77:6-2 During a stage, trigger battle drive even if your battle drive isn't ready, ONLY ONCE
+78:6-3 1.5x damage to all enemies, however, receive 3x damage
+84:6-4 Enemy generals' attack level decreases, however, normal soldier attack level increases
+79:6-5 Attack level raises when in critical condition (HP gauge in red)
+62:7-1 Deal more damage to shield soldiers
+63:7-2 Deal more damage to ninjas
+64:7-3 Deal more damage to big soldiers
+65:7-4 Deal more damage to cavalries
+66:7-5 Deal more damage to samurais and normal soldiers. Equipping all 5 items will increase the damage level to all these enemy types greatly
+81:8-1 Basara attacks combo hits+1 (so every hit counts as 2 hits when performing basaras)
+82:8-2 When HP and Energy guage are full, combo hits+1
+129:8-3 Combo hits+1, cannot raise Energy level
+131:8-4 Combo hits+1, cannot guard or evade
+132:8-5 Combo hits+1, harder to maintain combo counts
+139:9-1 Mounted attacks combo hits+1
+130:9-2 Attack combo hits+1, receive 3x damage
+140:9-3 Attack combo hits+2, receive 5x damage
+80:9-4 Makes you smell bad so enemies won't come near you
+146:9-5 Makes you smell good to make enemies sleepy
+75:10-1 Raise knock-back attack levels
+143:10-2 Make knock-back attacks like a home-run bat
+134:10-3 Raise weapon/armor level to the MAX in battle
+136:10-4 Combo counts remains when use mounted attacks
+138:10-5 Transform the replenish items you receive every 50 kills to a experience 2x item (that cat doll)
+93:11-1 +1 experience for every kill
+94:11-2 +5 experience for every kill
+100:11-3 Transform ALL chests to golds, including those who carry the red box
+98:11-4 Hide your HP bar during battle, receive 0.5x more towards your evaluation at the end of the battle
+99:11-5 Receive a lot more gold, however, gold will be cut half when you receive damage
+122:12-1 For ONCE at the end of the battle, you can re-shuffle the items/weapons/armors you received during battle
+123:12-2 For ONCE at the end of the battle, you can re-shuffle the level of items/weapons/armors you received during battle
+97:12-3 If you achieve 1000 hits in a stage, you'll receive a precious item chest (not effective in Grand Tournament)
+96:12-4 If you achieve 500 kills in a stage, you'll receive a precious weapon chest (not effective in Grand Tournament)
+95:12-5 2x experience for special achievements (so if you get 1000 experience for completing the special achievement, you'll get 2000 instead)
+150:13-1 Make the theme song the in-battle BGM
+124:13-2 Make the ending song the in-battle BGM
+125:13-3 Make the current character's theme music as the in-battle BGM  
+127:13-4 Receive supports from your allies
+128:13-5 A beautiful lady will be giving you basara replenish items in intervals of time
+85:14-1 Start the battle with basara energy full
+86:14-2 Start the battle with battle drive level ONE ready
+87:14-3 HP slowly replenishes, replenish speed raises when with allies, cannot replenish during guard (not effective in Grand Tournament)
+88:14-4 Basara energy slowly replenishes, replenish speed raises when with allies, cannot replenish during guard (not effective in Grand Tournament)
+137:14-5 HP level replenished fully at the start of each floor in Grand Tournament (but not effective in normal battles)
+89:15-1 Revive once when KOed
+83:15-2 All enemy HP levels 2x
+148:15-3 Allies will not follow you
+144:15-4 After clearing a stage, every surviving allied general generates 300 experience
+101:15-5 Vibrates and illuminates when a golden special chest is near (story mode and Musashi's Conquest ONLY)
+102:16-1 Raises luck, equip all 5 items for greater effects
+103:16-2 Raises luck, equip all 5 items for greater effects
+104:16-3 Raises luck, equip all 5 items for greater effects
+105:16-4 Raises luck, equip all 5 items for greater effects
+106:16-5 Raises luck, equip all 5 items for greater effects
+107:17-1 Receive 1 extra normal item/weapon chest after the stage (not effective in Grand Tournament), equip all 5 items for greater effects.
+108:17-2 Receive 1 extra normal item/weapon chest after the stage (not effective in Grand Tournament), equip all 5 items for greater effects.
+109:17-3 Receive 1 extra normal item/weapon chest after the stage (not effective in Grand Tournament), equip all 5 items for greater effects.
+110:17-4 Receive 1 extra normal item/weapon chest after the stage (not effective in Grand Tournament), equip all 5 items for greater effects.
+111:17-5 Receive 1 extra normal item/weapon chest after the stage (not effective in Grand Tournament), equip all 5 items for greater effects.
+112:18-1 Receive 500 extra golds after the stage, equip all 5 items for greater effects
+113:18-2 Receive 500 extra golds after the stage, equip all 5 items for greater effects
+114:18-3 Receive 500 extra golds after the stage, equip all 5 items for greater effects
+115:18-4 Receive 500 extra golds after the stage, equip all 5 items for greater effects
+116:18-5 Receive 500 extra golds after the stage, equip all 5 items for greater effects
+117:19-1 Receive 1000 extra experience points after the stage, equip all 5 items for greater effects
+118:19-2 Receive 1000 extra experience points after the stage, equip all 5 items for greater effects
+119:19-3 Receive 1000 extra experience points after the stage, equip all 5 items for greater effects
+120:19-4 Receive 1000 extra experience points after the stage, equip all 5 items for greater effects
+121:19-5 Receive 1000 extra experience points after the stage, equip all 5 items for greater effects
+90:20-1 Skill level 1 when equipped only 1 of this item, but raised to level 2 when equipped 2 of these items, and level max when equipped 3 of these items
+91:20-2 Skill level 1 when equipped only 1 of this item, but raised to level 2 when equipped 2 of these items, and level max when equipped 3 of these items
+92:20-3 Skill level 1 when equipped only 1 of this item, but raised to level 2 when equipped 2 of these items, and level max when equipped 3 of these items
+2:20-4 Masamune ONLY, unlimited 6 katana usage, however, lowers defense level, cannot guard or evade 
+3:20-5 Yukimura ONLY, fire elemental attacks attached to weapon, battle drive level increase when in critical condition
+23:21-1 Keiji ONLY, make enemy dances when taunting
+20:21-2 Hideyoshi ONLY, able to pick up allies with his skills
+4:21-3 Nobunaga ONLY, transfer all defense to attacks, defense becomes 0
+18:21-4 Motochika ONLY, receive allied supports when in critical condition, also more critical attacks
+16:21-5 Kasuga ONLY, clones herself and joins attack, diminishes when in critical condition
+8:22-1 Ranmaru ONLY, battle drive lasts 1 minute at the beginning of the stage, afterwards, HP level decreases 75%
+10:22-2 Sasuke ONLY, auto-triggers basara when in critical condition, HP replenishes slowly
+15:22-3 Matsu ONLY, animal-based, basara, and mounted attacks damage increases
+21:22-4 Hanbei ONLY, HP decreases slowly, receive more gold
+11:22-5 Mitsuhide ONLY, auto-basara+revive after KOed
+17:23-1 Mouri ONLY, cannot be interrupted when placing traps skills
+7:23-2 Kenshin ONLY, throw roses when taunting, ice-elemental
+13:23-3 Shimazu ONLY, when receiving damages, your attack hits increase
+6:23-4 Shingen ONLY, hits+5 to skill-based attacks in his basara
+1:23-5 Toshiie ONLY, receive onigiris from Matsu when they are together, also raise the attack level
+14:24-1 Honda ONLY, normal projectiles becomes electric-plasma attacks
+5:24-2 Nohime ONLY, normal square-based attacks become melee moves
+12:24-3 Zabii ONLY, killed enemies becomes a practitioner, receive more gold depending on how many enemies you've transformed
+9:24-4 Itsuki ONLY, goes to battle without the hammer, cannot guard or evade
+22:24-5 Musashi ONLY, taunting attack level raises
+</DropDownList>
+                  <LastState Value="" RealAddress="204CA274"/>
+                  <VariableType>Byte</VariableType>
+                  <Address>204CA274</Address>
+                </CheatEntry>
+              </CheatEntries>
             </CheatEntry>
           </CheatEntries>
         </CheatEntry>
@@ -547,14 +1206,14 @@ db ]]..originalBytes)
                 <CheatEntry>
                   <ID>231</ID>
                   <Description>"HP in-battle"</Description>
-                  <LastState Value="69000" RealAddress="215C1B20"/>
+                  <LastState Value="" RealAddress="215C1B20"/>
                   <VariableType>4 Bytes</VariableType>
                   <Address>215C1B20</Address>
                 </CheatEntry>
                 <CheatEntry>
                   <ID>233</ID>
                   <Description>"Basara meter"</Description>
-                  <LastState Value="16000" RealAddress="215C1F00"/>
+                  <LastState Value="" RealAddress="215C1F00"/>
                   <VariableType>4 Bytes</VariableType>
                   <Address>215C1F00</Address>
                 </CheatEntry>
@@ -582,7 +1241,7 @@ db ]]..originalBytes)
                 <CheatEntry>
                   <ID>152</ID>
                   <Description>"Z Axis"</Description>
-                  <LastState Value="209.9039459" RealAddress="215C1604"/>
+                  <LastState Value="" RealAddress="215C1604"/>
                   <VariableType>Float</VariableType>
                   <Address>215C1604</Address>
                 </CheatEntry>
@@ -598,28 +1257,28 @@ db ]]..originalBytes)
                 <CheatEntry>
                   <ID>251</ID>
                   <Description>"HP in-battle"</Description>
-                  <LastState Value="65011720" RealAddress="21C28BA0"/>
+                  <LastState Value="" RealAddress="21C28BA0"/>
                   <VariableType>4 Bytes</VariableType>
                   <Address>21C28BA0</Address>
                 </CheatEntry>
                 <CheatEntry>
                   <ID>249</ID>
                   <Description>"Basara meter"</Description>
-                  <LastState Value="268435582" RealAddress="21C28F80"/>
+                  <LastState Value="" RealAddress="21C28F80"/>
                   <VariableType>4 Bytes</VariableType>
                   <Address>21C28F80</Address>
                 </CheatEntry>
                 <CheatEntry>
                   <ID>246</ID>
                   <Description>"Drive ready level"</Description>
-                  <LastState Value="164" RealAddress="21C28FFD"/>
+                  <LastState Value="" RealAddress="21C28FFD"/>
                   <VariableType>Byte</VariableType>
                   <Address>21C28FFD</Address>
                 </CheatEntry>
                 <CheatEntry>
                   <ID>242</ID>
                   <Description>"Kill count"</Description>
-                  <LastState Value="35661869" RealAddress="21C28F5C"/>
+                  <LastState Value="" RealAddress="21C28F5C"/>
                   <VariableType>4 Bytes</VariableType>
                   <Address>21C28F5C</Address>
                 </CheatEntry>
