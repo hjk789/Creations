@@ -84,8 +84,8 @@ decreaseBrightnessOrGamma()
             
             if (blueLightFilter)
             {
-                currGammaGreen = ceil(currGammaGreen - 1.45)        ; These values are proportional with the red gamma value, in a way that the screen color gradually shifts from cold to warm color, while at the
-                currGammaBlue = ceil(currGammaBlue - 1.8)           ; same time decreasing the luminance. The resulting color values, in RGB from -128 to 128 (256 shades), are Red 15, Green -35 and Blue -75.
+                currGammaGreen -= 1.45              ; These values are proportional with the red gamma value, in a way that the screen color gradually shifts from cold to warm color, while at the
+                currGammaBlue -= 1.8                ; same time decreasing the luminance. The resulting color values, in RGB from -128 to 128 (256 shades), are Red 15, Green -35 and Blue -75.
             }
             else 
             {
@@ -93,7 +93,7 @@ decreaseBrightnessOrGamma()
                 currGammaBlue-- 
             }
             
-            Monitor.SetGammaRamp(currGammaRed, currGammaGreen, currGammaBlue)
+            Monitor.SetGammaRamp(currGammaRed, ceil(currGammaGreen), ceil(currGammaBlue))
             
         }
         else return false                           ; After 5 hours and 16 minutes, or 158 decreasings, exit the loop and wait for the shutdown.
