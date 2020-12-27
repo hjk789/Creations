@@ -1,3 +1,3 @@
-## [Auto Brightness Decreaser](https://github.com/hjk789/Creations/tree/master/AutoHotkey/Auto-Brightness-Decreaser)
+## [Gradual Brightness Decreaser](https://github.com/hjk789/Creations/tree/master/AutoHotkey/Gradual-Brightness-Decreaser)
 
-Gradually decrease the screen brightness to the lowest value, starting from the set hour.
+Gradually decrease the screen brightness, starting from the set hour. It also has an option to gradually shift the screen color to a warm tone.
