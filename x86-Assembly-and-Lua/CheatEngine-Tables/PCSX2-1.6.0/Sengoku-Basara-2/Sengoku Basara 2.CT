@@ -11,8 +11,8 @@
 ---------------------------------------------	  
 -- Sengoku Basara 2 PCSX2 Cheat Table
 -- Created by BLBC (hjk789)
--- Links:	fearlessrevolution.com/memberlist.php?mode=viewprofile&amp;u=65626
---		  	github.com/hjk789
+-- Links:   fearlessrevolution.com/memberlist.php?mode=viewprofile&amp;u=65626
+--          github.com/hjk789
 -- Copyright (c) BLBC, 2020+
 ----------------------------------------------
 	  
@@ -195,7 +195,7 @@ db ]]..secondOpcodeBytes..[[
 jmp return
 
 ]]..expUpdaterAddress..[[:
-jmp expMultiplier
+jmp code
 nop 7
 return:
 ]])
@@ -295,7 +295,7 @@ sub edx,[ecx]                   // Subtract the current gold from the new one to
 imul edx,[goldMultiplierValue]  // Multiply the newly received gold by the multiplier value.
 add edx,[ecx]                   // Sum back the current gold to the multiplied one.
 push eax                        // push eax in the stack to preserve it's current value and free it to be used.
-mov eax,[goldHudAddress]        // Copy the address stored in the goldHudAddress symbol to eax, as ASM can't process value with value, only register with value or register with register.
+mov eax,[goldHudAddress]        // Copy the address stored in the goldHudAddress symbol to eax, to be able to access the value of the address.
 mov [eax],edx                   // Update the gold HUD value with the multiplied gold value, otherwise the HUD would show the old value.
 pop eax                         // Return eax to it's previous value.
 
