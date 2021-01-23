@@ -221,7 +221,7 @@ db ]]..originalBytes)
           <ID>299</ID>
           <Description>"Gold Multiplier"</Description>
           <Options moHideChildren="1"/>
-          <LastState Activated="1"/>
+          <LastState/>
           <VariableType>Auto Assembler Script</VariableType>
           <AssemblerScript>{$lua}
 if syntaxcheck then return end
@@ -233,7 +233,7 @@ if syntaxcheck then return end
 -- The code below gets the address of the instruction that updates the gold HUD, then store in a symbol the address of the gold HUD value to be used by the gold multiplier.
 -- This is needed because the gold HUD address is different for each stage.
 
-goldHudUpdaterAddress = AOBScan("89 11 8B 0D 20 A0 xx xx 81 C1 6C 02 00 00 89 C8 C1 E8 0C 8B 04 85 30 xx xx xx BB xx xx xx 30 01 C1 0F 88 xx xx xx D2 8B 01 99 A3 30 9F xx xx 89 15 34 9F xx xx C7")
+goldHudUpdaterAddress = AOBScan("89 11 8B 0D 20 A0 xx xx 81 C1 6C 02 00 00 89 C8 C1 E8 0C 8B 04 85 30 xx xx xx BB xx xx xx 30 01 C1 0F 88 xx xx xx xx 8B 01 99 A3 30 9F xx xx 89 15 34 9F xx xx C7")
 
 if goldHudUpdaterAddress == nil then
    showMessage("Couldn't find the gold HUD updater bytes! Make sure to receive gold at least once before activating this.")
@@ -328,7 +328,6 @@ db 89 11 8B 0D 20 A0 ]]..xxxx)
             <CheatEntry>
               <ID>622</ID>
               <Description>"Multiplier"</Description>
-              <LastState Value="25" RealAddress="03FB0000"/>
               <VariableType>4 Bytes</VariableType>
               <Address>goldMultiplierValue</Address>
             </CheatEntry>
@@ -648,7 +647,6 @@ movaps [ecx],xmm1
             <CheatEntry>
               <ID>621</ID>
               <Description>"Multiplier"</Description>
-              <LastState Value="1.409999967" RealAddress="03FE0000"/>
               <VariableType>Float</VariableType>
               <Address>speedMultiplier</Address>
             </CheatEntry>
@@ -673,28 +671,24 @@ movaps [ecx],xmm1
             <CheatEntry>
               <ID>228</ID>
               <Description>"XP in-battle"</Description>
-              <LastState Value="0" RealAddress="20514B48"/>
               <VariableType>4 Bytes</VariableType>
               <Address>20514B48</Address>
             </CheatEntry>
             <CheatEntry>
               <ID>511</ID>
               <Description>"camera x"</Description>
-              <LastState Value="1586.213135" RealAddress="20495E90"/>
               <VariableType>Float</VariableType>
               <Address>20495E90</Address>
             </CheatEntry>
             <CheatEntry>
               <ID>614</ID>
               <Description>"camera z"</Description>
-              <LastState Value="166.0784302" RealAddress="20495EB4"/>
               <VariableType>Float</VariableType>
               <Address>20495EB4</Address>
             </CheatEntry>
             <CheatEntry>
               <ID>609</ID>
               <Description>"camera y"</Description>
-              <LastState Value="2127.902344" RealAddress="20495E98"/>
               <VariableType>Float</VariableType>
               <Address>20495E98</Address>
             </CheatEntry>
@@ -838,7 +832,6 @@ movaps [ecx],xmm1
 9:24-4 Itsuki ONLY, goes to battle without the hammer, cannot guard or evade
 22:24-5 Musashi ONLY, taunting attack level raises
 </DropDownList>
-                  <LastState Value="" RealAddress="204CA270"/>
                   <VariableType>Byte</VariableType>
                   <Address>204CA270</Address>
                 </CheatEntry>
@@ -966,7 +959,6 @@ movaps [ecx],xmm1
 9:24-4 Itsuki ONLY, goes to battle without the hammer, cannot guard or evade
 22:24-5 Musashi ONLY, taunting attack level raises
 </DropDownList>
-                  <LastState Value="" RealAddress="204CA271"/>
                   <VariableType>Byte</VariableType>
                   <Address>204CA271</Address>
                 </CheatEntry>
@@ -1094,7 +1086,6 @@ movaps [ecx],xmm1
 9:24-4 Itsuki ONLY, goes to battle without the hammer, cannot guard or evade
 22:24-5 Musashi ONLY, taunting attack level raises
 </DropDownList>
-                  <LastState Value="" RealAddress="204CA272"/>
                   <VariableType>Byte</VariableType>
                   <Address>204CA272</Address>
                 </CheatEntry>
@@ -1222,7 +1213,6 @@ movaps [ecx],xmm1
 9:24-4 Itsuki ONLY, goes to battle without the hammer, cannot guard or evade
 22:24-5 Musashi ONLY, taunting attack level raises
 </DropDownList>
-                  <LastState Value="" RealAddress="204CA273"/>
                   <VariableType>Byte</VariableType>
                   <Address>204CA273</Address>
                 </CheatEntry>
@@ -1350,7 +1340,6 @@ movaps [ecx],xmm1
 9:24-4 Itsuki ONLY, goes to battle without the hammer, cannot guard or evade
 22:24-5 Musashi ONLY, taunting attack level raises
 </DropDownList>
-                  <LastState Value="" RealAddress="204CA274"/>
                   <VariableType>Byte</VariableType>
                   <Address>204CA274</Address>
                 </CheatEntry>
@@ -1366,42 +1355,36 @@ movaps [ecx],xmm1
                 <CheatEntry>
                   <ID>231</ID>
                   <Description>"HP in-battle"</Description>
-                  <LastState Value="" RealAddress="215C1B20"/>
                   <VariableType>4 Bytes</VariableType>
                   <Address>215C1B20</Address>
                 </CheatEntry>
                 <CheatEntry>
                   <ID>233</ID>
                   <Description>"Basara meter"</Description>
-                  <LastState Value="" RealAddress="215C1F00"/>
                   <VariableType>4 Bytes</VariableType>
                   <Address>215C1F00</Address>
                 </CheatEntry>
                 <CheatEntry>
                   <ID>237</ID>
                   <Description>"Drive ready level"</Description>
-                  <LastState Value="0" RealAddress="215C1F7D"/>
                   <VariableType>Byte</VariableType>
                   <Address>215C1F7D</Address>
                 </CheatEntry>
                 <CheatEntry>
                   <ID>239</ID>
                   <Description>"Gold in-battle"</Description>
-                  <LastState Value="0" RealAddress="215C1EE8"/>
                   <VariableType>4 Bytes</VariableType>
                   <Address>215C1EE8</Address>
                 </CheatEntry>
                 <CheatEntry>
                   <ID>235</ID>
                   <Description>"Kill count"</Description>
-                  <LastState Value="0" RealAddress="215C1EDC"/>
                   <VariableType>4 Bytes</VariableType>
                   <Address>215C1EDC</Address>
                 </CheatEntry>
                 <CheatEntry>
                   <ID>152</ID>
                   <Description>"Z Axis"</Description>
-                  <LastState Value="" RealAddress="215C1604"/>
                   <VariableType>Float</VariableType>
                   <Address>215C1604</Address>
                 </CheatEntry>
@@ -1417,28 +1400,24 @@ movaps [ecx],xmm1
                 <CheatEntry>
                   <ID>251</ID>
                   <Description>"HP in-battle"</Description>
-                  <LastState Value="" RealAddress="21C28BA0"/>
                   <VariableType>4 Bytes</VariableType>
                   <Address>21C28BA0</Address>
                 </CheatEntry>
                 <CheatEntry>
                   <ID>249</ID>
                   <Description>"Basara meter"</Description>
-                  <LastState Value="" RealAddress="21C28F80"/>
                   <VariableType>4 Bytes</VariableType>
                   <Address>21C28F80</Address>
                 </CheatEntry>
                 <CheatEntry>
                   <ID>246</ID>
                   <Description>"Drive ready level"</Description>
-                  <LastState Value="" RealAddress="21C28FFD"/>
                   <VariableType>Byte</VariableType>
                   <Address>21C28FFD</Address>
                 </CheatEntry>
                 <CheatEntry>
                   <ID>242</ID>
                   <Description>"Kill count"</Description>
-                  <LastState Value="" RealAddress="21C28F5C"/>
                   <VariableType>4 Bytes</VariableType>
                   <Address>21C28F5C</Address>
                 </CheatEntry>
@@ -1456,28 +1435,24 @@ movaps [ecx],xmm1
             <CheatEntry>
               <ID>513</ID>
               <Description>"player x"</Description>
-              <LastState Value="0" RealAddress="215C1E80"/>
               <VariableType>Float</VariableType>
               <Address>215C1E80</Address>
             </CheatEntry>
             <CheatEntry>
               <ID>616</ID>
               <Description>"player z"</Description>
-              <LastState Value="0" RealAddress="215C1E84"/>
               <VariableType>Float</VariableType>
               <Address>215C1E84</Address>
             </CheatEntry>
             <CheatEntry>
               <ID>608</ID>
               <Description>"player y"</Description>
-              <LastState Value="0" RealAddress="215C1E88"/>
               <VariableType>Float</VariableType>
               <Address>215C1E88</Address>
             </CheatEntry>
             <CheatEntry>
               <ID>510</ID>
               <Description>"faster running (10) (determines if the map item is being used. Set to 10 to enable)"</Description>
-              <LastState Value="" RealAddress="215C25CE"/>
               <ShowAsHex>1</ShowAsHex>
               <VariableType>Byte</VariableType>
               <Address>215C25Ce</Address>
