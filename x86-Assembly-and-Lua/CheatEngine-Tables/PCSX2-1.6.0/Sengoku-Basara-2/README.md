@@ -36,7 +36,7 @@ This is a cheat table for Sengoku Basara 2 for PCSX2 1.6.0, created in Cheat Eng
 - **Movement Speed Multiplier**  
   Makes the player character run faster by multiplying the movement speed by the number you specify (x1.40 by default).
   
-- **Miscellaneous static addresses**
+- **Miscellaneous static addresses**  
   A collection of static addresses that you can tweak the values. Each character has their own set of static addresses used only by them, so I added only two characters, which includes the stage's basic values and an item selector (currently only for Masamune). It also includes character-independent addresses, such as camera coords and experience. I can't guarantee that these addresses will work for you though.
   
 ## How to use
