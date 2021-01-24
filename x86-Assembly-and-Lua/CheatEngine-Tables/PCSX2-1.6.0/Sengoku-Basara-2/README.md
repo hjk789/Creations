@@ -41,13 +41,13 @@ This is a cheat table for Sengoku Basara 2 for PCSX2 1.6.0, created in Cheat Eng
   
 ## How to use
 
-- Download this cheat table [raw file](https://raw.githubusercontent.com/hjk789/Creations/master/x86-Assembly-and-Lua/CheatEngine-Tables/PCSX2-1.6.0/Sengoku-Basara-2/Sengoku%20Basara%202.CT) and open with Cheat Engine. 
-- Make sure that Sengoku Basara 2 in PCSX2 is running, then activate the "Enable" script. 
+- Download the [cheat table file](https://fearlessrevolution.com/download/file.php?id=29096&sid=1af00f7539d76a49aa45d38121652fb0) and open with Cheat Engine. 
+- Make sure that Sengoku Basara 2 in PCSX2 is running, then activate the "Enable" script. The script will automatically attach to the process.
 - When already in-battle, activate the cheats you want. Some cheats require that you do an action at least once to be able to activate, a message box will tell you what you need to do.
 
 ## License
 
 - You can view the code, download copies and run this cheat table.
-- You can link to this cheat tables's [homepage](https://github.com/hjk789/Creations/tree/master/x86-Assembly-and-Lua/CheatEngine-Tables/PCSX2-1.6.0/Sengoku-Basara-2). 
+- You can link to this cheat table's [FearlessRevolution post](https://fearlessrevolution.com/viewtopic.php?f=4&t=15025) or to this cheat table's [GitHub homepage](https://github.com/hjk789/Creations/tree/master/x86-Assembly-and-Lua/CheatEngine-Tables/PCSX2-1.6.0/Sengoku-Basara-2). 
 - You can modify your copy as you like.
 - You cannot do any other action not allowed in this license.  
