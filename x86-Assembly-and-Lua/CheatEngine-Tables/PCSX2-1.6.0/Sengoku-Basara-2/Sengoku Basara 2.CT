@@ -5,7 +5,7 @@
       <ID>298</ID>
       <Description>"Enable"</Description>
       <Options moHideChildren="1"/>
-      <LastState Activated="1"/>
+      <LastState/>
       <VariableType>Auto Assembler Script</VariableType>
       <AssemblerScript>{$lua}
 ---------------------------------------------	  
@@ -46,11 +46,19 @@ xxxx = tohex(thoseTwoBytes[4]) .. " " .. tohex(thoseTwoBytes[5])           -- sc
 </AssemblerScript>
       <CheatEntries>
         <CheatEntry>
-          <ID>255</ID>
-          <Description>"Invincibility"</Description>
-          <LastState/>
-          <VariableType>Auto Assembler Script</VariableType>
-          <AssemblerScript>{$lua}
+          <ID>628</ID>
+          <Description>"In-Battle Cheats"</Description>
+          <Options moHideChildren="1"/>
+          <LastState Value="" RealAddress="00000000"/>
+          <Color>FF0000</Color>
+          <GroupHeader>1</GroupHeader>
+          <CheatEntries>
+            <CheatEntry>
+              <ID>255</ID>
+              <Description>"Invincibility"</Description>
+              <LastState/>
+              <VariableType>Auto Assembler Script</VariableType>
+              <AssemblerScript>{$lua}
 if syntaxcheck then return end
 
 local secondOpcodeBytes = "C7 05 B8 A1 "..xxxx.." FC 4C 1C 00"
@@ -84,7 +92,7 @@ cmp ecx,215CA000
 jg originalcode       // Character bosses
 jmp return            // Otherwise, don't do anything.
 
-originalcode:         // edx is the decreased value to be set to the entity's current health. The square brackets indicate that mov should set the
+// original code:     // edx is the decreased value to be set to the entity's current health. The square brackets indicate that mov should set the
 mov [ecx],edx         // value of edx as the value in the address stored in ecx, otherwise it would set to ecx but wouldn't change the health value.
 db ]]..secondOpcodeBytes..[[
 
@@ -104,13 +112,13 @@ dealloc(invincibility)
 ]]..healthUpdaterAddress..[[:
 db ]]..originalBytes)
 </AssemblerScript>
-        </CheatEntry>
-        <CheatEntry>
-          <ID>315</ID>
-          <Description>"Infinite Basara"</Description>
-          <LastState Activated="1"/>
-          <VariableType>Auto Assembler Script</VariableType>
-          <AssemblerScript>{$lua}
+            </CheatEntry>
+            <CheatEntry>
+              <ID>315</ID>
+              <Description>"Infinite Basara"</Description>
+              <LastState/>
+              <VariableType>Auto Assembler Script</VariableType>
+              <AssemblerScript>{$lua}
 if syntaxcheck then return end
 
 [ENABLE]
@@ -145,14 +153,14 @@ dealloc(infiniteBasara)
 basaraMeterUpdater:
 db A3 60 9F ]]..xxxx)
 </AssemblerScript>
-        </CheatEntry>
-        <CheatEntry>
-          <ID>297</ID>
-          <Description>"EXP Multiplier"</Description>
-          <Options moHideChildren="1"/>
-          <LastState/>
-          <VariableType>Auto Assembler Script</VariableType>
-          <AssemblerScript>{$lua}
+            </CheatEntry>
+            <CheatEntry>
+              <ID>297</ID>
+              <Description>"EXP Multiplier"</Description>
+              <Options moHideChildren="1"/>
+              <LastState/>
+              <VariableType>Auto Assembler Script</VariableType>
+              <AssemblerScript>{$lua}
 if syntaxcheck then return end
 
 local secondOpcodeBytes = "C7 05 B8 A1 "..xxxx.." 0C E3 20 00"
@@ -161,10 +169,11 @@ local originalBytes = "89 11 "..secondOpcodeBytes
 
 [ENABLE]
 
+-- The instruction in this address is run on every frame. It updates the current experience points.
 expUpdaterAddress = AOBScan(originalBytes.." A1")
 
 if expUpdaterAddress == nil then
-   showMessage("Couldn't find the updater bytes!")
+   showMessage("Couldn't find the experience updater bytes!")
    return 0
 end
 
@@ -172,7 +181,6 @@ expUpdaterAddress = expUpdaterAddress[0]
 
 autoAssemble([[
 alloc(expMultiplier,32)
-label(originalcode)
 label(expMultiplierValue)
 registersymbol(expMultiplierValue)
 
@@ -188,7 +196,7 @@ sub edx,[ecx]                   // Subtract the new EXP from the current one to 
 imul edx,[expMultiplierValue]   // Multiply the newly received EXP by the multiplier value.
 add edx,[ecx]                   // Sum back the current EXP to the new one.
 
-originalcode:
+// original code:
 mov [ecx],edx
 db ]]..secondOpcodeBytes..[[
 
@@ -208,22 +216,22 @@ dealloc(expMultiplier)
 ]]..expUpdaterAddress..[[:
 db ]]..originalBytes)
 </AssemblerScript>
-          <CheatEntries>
-            <CheatEntry>
-              <ID>623</ID>
-              <Description>"Multiplier"</Description>
-              <VariableType>4 Bytes</VariableType>
-              <Address>expMultiplierValue</Address>
+              <CheatEntries>
+                <CheatEntry>
+                  <ID>623</ID>
+                  <Description>"Multiplier"</Description>
+                  <VariableType>4 Bytes</VariableType>
+                  <Address>expMultiplierValue</Address>
+                </CheatEntry>
+              </CheatEntries>
             </CheatEntry>
-          </CheatEntries>
-        </CheatEntry>
-        <CheatEntry>
-          <ID>299</ID>
-          <Description>"Gold Multiplier"</Description>
-          <Options moHideChildren="1"/>
-          <LastState/>
-          <VariableType>Auto Assembler Script</VariableType>
-          <AssemblerScript>{$lua}
+            <CheatEntry>
+              <ID>299</ID>
+              <Description>"Gold Multiplier"</Description>
+              <Options moHideChildren="1"/>
+              <LastState/>
+              <VariableType>Auto Assembler Script</VariableType>
+              <AssemblerScript>{$lua}
 if syntaxcheck then return end
 
 [ENABLE]
@@ -245,13 +253,12 @@ goldHudUpdaterAddress = goldHudUpdaterAddress[0]
 autoAssemble([[
 alloc(getGoldHUDAddress,32)
 alloc(goldHudAddress,16)
-label(originalcode)
 registersymbol(goldHudAddress)
 
 getGoldHUDAddress:
 mov [goldHudAddress],ecx      // ecx contains the address of the gold HUD. This copies the address
                               // to the goldHudAddress symbol, to be used by the multiplier.
-originalcode:
+// original code:
 mov [ecx],edx
 db 8B 0D 20 A0 ]]..xxxx..[[
 
@@ -324,21 +331,21 @@ db ]]..originalBytes..[[
 ]]..goldHudUpdaterAddress..[[:
 db 89 11 8B 0D 20 A0 ]]..xxxx)
 </AssemblerScript>
-          <CheatEntries>
-            <CheatEntry>
-              <ID>622</ID>
-              <Description>"Multiplier"</Description>
-              <VariableType>4 Bytes</VariableType>
-              <Address>goldMultiplierValue</Address>
+              <CheatEntries>
+                <CheatEntry>
+                  <ID>622</ID>
+                  <Description>"Multiplier"</Description>
+                  <VariableType>4 Bytes</VariableType>
+                  <Address>goldMultiplierValue</Address>
+                </CheatEntry>
+              </CheatEntries>
             </CheatEntry>
-          </CheatEntries>
-        </CheatEntry>
-        <CheatEntry>
-          <ID>296</ID>
-          <Description>"Battle Drive Always Ready"</Description>
-          <LastState Activated="1"/>
-          <VariableType>Auto Assembler Script</VariableType>
-          <AssemblerScript>{$lua}
+            <CheatEntry>
+              <ID>296</ID>
+              <Description>"Battle Drive Always Ready"</Description>
+              <LastState/>
+              <VariableType>Auto Assembler Script</VariableType>
+              <AssemblerScript>{$lua}
 if syntaxcheck then return end
 
 local secondOpcodeBytes = "A3 30 9F "..xxxx
@@ -359,12 +366,11 @@ driveCheckerAddress = driveCheckerAddress[0]
 
 autoAssemble([[
 alloc(driveAlwaysReady,32)
-label(originalcode)
 
 driveAlwaysReady:
 mov [ecx],3      // ecx contains the address of the currently ready drive
                  // level of the current character. This sets it to 3.
-originalcode:
+// original code:
 movzx eax,byte ptr [ecx]
 db ]]..secondOpcodeBytes..[[
 
@@ -384,13 +390,13 @@ dealloc(driveAlwaysReady)
 ]]..driveCheckerAddress..[[:
 db ]]..originalBytes)
 </AssemblerScript>
-        </CheatEntry>
-        <CheatEntry>
-          <ID>295</ID>
-          <Description>"Infinite Battle Drive"</Description>
-          <LastState Activated="1"/>
-          <VariableType>Auto Assembler Script</VariableType>
-          <AssemblerScript>{$lua}
+            </CheatEntry>
+            <CheatEntry>
+              <ID>295</ID>
+              <Description>"Infinite Battle Drive"</Description>
+              <LastState/>
+              <VariableType>Auto Assembler Script</VariableType>
+              <AssemblerScript>{$lua}
 if syntaxcheck then return end
 
 [ENABLE]
@@ -416,13 +422,13 @@ autoAssemble(remaininingDriveUpdaterAddress..[[:
 db 66 89 11
 ]])
 </AssemblerScript>
-        </CheatEntry>
-        <CheatEntry>
-          <ID>294</ID>
-          <Description>"Always Receive Battle Drive Level 3"</Description>
-          <LastState/>
-          <VariableType>Auto Assembler Script</VariableType>
-          <AssemblerScript>{$lua}
+            </CheatEntry>
+            <CheatEntry>
+              <ID>294</ID>
+              <Description>"Always Receive Battle Drive Level 3"</Description>
+              <LastState/>
+              <VariableType>Auto Assembler Script</VariableType>
+              <AssemblerScript>{$lua}
 if syntaxcheck then return end
 
 local secondOpcodeBytes = "C7 05 B8 A1 "..xxxx.." 64 97 20 00"
@@ -443,12 +449,11 @@ driveUpdaterAddress = driveUpdaterAddress[0]
 
 autoAssemble([[
 alloc(skipToDriveThree,32)
-label(originalcode)
 
 skipToDriveThree:
 mov dl,3         // dl contains the value to be set. This sets it to 3.
 
-originalcode:
+// original code:
 mov [ecx],dl     // ecx contains the address of the level of the currrently ready battle drive.
 db ]]..secondOpcodeBytes..[[
 
@@ -468,13 +473,13 @@ dealloc(skipToDriveThree)
 ]]..driveUpdaterAddress..[[:
 db ]]..originalBytes)
 </AssemblerScript>
-        </CheatEntry>
-        <CheatEntry>
-          <ID>301</ID>
-          <Description>"Instant Charged Attack"</Description>
-          <LastState Activated="1"/>
-          <VariableType>Auto Assembler Script</VariableType>
-          <AssemblerScript>{$lua}
+            </CheatEntry>
+            <CheatEntry>
+              <ID>301</ID>
+              <Description>"Instant Charged Attack"</Description>
+              <LastState/>
+              <VariableType>Auto Assembler Script</VariableType>
+              <AssemblerScript>{$lua}
 if syntaxcheck then return end
 
 local secondOpcodeBytes = "A1 70 9F "..xxxx
@@ -534,13 +539,13 @@ dealloc(instantChargedAttack)
 ]]..chargedAttackStageUpdaterAddress..[[:
 db ]]..originalBytes)
 </AssemblerScript>
-        </CheatEntry>
-        <CheatEntry>
-          <ID>509</ID>
-          <Description>"Every Hit Is Critical"</Description>
-          <LastState Activated="1"/>
-          <VariableType>Auto Assembler Script</VariableType>
-          <AssemblerScript>{$lua}
+            </CheatEntry>
+            <CheatEntry>
+              <ID>509</ID>
+              <Description>"Every Hit Is Critical"</Description>
+              <LastState/>
+              <VariableType>Auto Assembler Script</VariableType>
+              <AssemblerScript>{$lua}
 if syntaxcheck then return end
 
 local secondOpcodeBytes = "A3 20 A0 "..xxxx
@@ -561,12 +566,11 @@ criticalCheckerAddress = criticalCheckerAddress[0]
 
 autoAssemble([[
 alloc(everyHitCritical,32)
-label(originalcode)
 
 everyHitCritical:
 mov [ecx],(int)99999      // ecx contains the address of the current critical hit chance. This
                           // sets it to a value high enough to always be critical.
-originalcode:
+// original code:
 movzx eax,byte ptr [ecx]
 db ]]..secondOpcodeBytes..[[
 
@@ -586,14 +590,14 @@ dealloc(everyHitCritical)
 ]]..criticalCheckerAddress..[[:
 db ]]..originalBytes)
 </AssemblerScript>
-        </CheatEntry>
-        <CheatEntry>
-          <ID>620</ID>
-          <Description>"Movement Speed Multiplier"</Description>
-          <Options moHideChildren="1"/>
-          <LastState Activated="1"/>
-          <VariableType>Auto Assembler Script</VariableType>
-          <AssemblerScript>[ENABLE]
+            </CheatEntry>
+            <CheatEntry>
+              <ID>620</ID>
+              <Description>"Movement Speed Multiplier"</Description>
+              <Options moHideChildren="1"/>
+              <LastState/>
+              <VariableType>Auto Assembler Script</VariableType>
+              <AssemblerScript>[ENABLE]
 alloc(movementSpeedMultiplier,128)
 registersymbol(movementDeltaUpdaterAddress)
 label(speedMultiplier)
@@ -643,70 +647,165 @@ movementDeltaUpdaterAddress:
 movaps xmm1,[edx]
 movaps [ecx],xmm1
 </AssemblerScript>
-          <CheatEntries>
-            <CheatEntry>
-              <ID>621</ID>
-              <Description>"Multiplier"</Description>
-              <VariableType>Float</VariableType>
-              <Address>speedMultiplier</Address>
-            </CheatEntry>
-          </CheatEntries>
-        </CheatEntry>
-      </CheatEntries>
-    </CheatEntry>
-    <CheatEntry>
-      <ID>183</ID>
-      <Description>"Static Addresses"</Description>
-      <Options moHideChildren="1"/>
-      <LastState Value="" RealAddress="00000000"/>
-      <GroupHeader>1</GroupHeader>
-      <CheatEntries>
-        <CheatEntry>
-          <ID>316</ID>
-          <Description>"Any Character"</Description>
-          <Options moHideChildren="1"/>
-          <LastState Value="" RealAddress="00000000"/>
-          <GroupHeader>1</GroupHeader>
-          <CheatEntries>
-            <CheatEntry>
-              <ID>228</ID>
-              <Description>"XP in-battle"</Description>
-              <VariableType>4 Bytes</VariableType>
-              <Address>20514B48</Address>
-            </CheatEntry>
-            <CheatEntry>
-              <ID>511</ID>
-              <Description>"camera x"</Description>
-              <VariableType>Float</VariableType>
-              <Address>20495E90</Address>
-            </CheatEntry>
-            <CheatEntry>
-              <ID>614</ID>
-              <Description>"camera z"</Description>
-              <VariableType>Float</VariableType>
-              <Address>20495EB4</Address>
-            </CheatEntry>
-            <CheatEntry>
-              <ID>609</ID>
-              <Description>"camera y"</Description>
-              <VariableType>Float</VariableType>
-              <Address>20495E98</Address>
+              <CheatEntries>
+                <CheatEntry>
+                  <ID>621</ID>
+                  <Description>"Multiplier"</Description>
+                  <VariableType>Float</VariableType>
+                  <Address>speedMultiplier</Address>
+                </CheatEntry>
+              </CheatEntries>
             </CheatEntry>
           </CheatEntries>
         </CheatEntry>
         <CheatEntry>
-          <ID>181</ID>
-          <Description>"Date Masamune"</Description>
+          <ID>629</ID>
+          <Description>"Before-Battle Cheats"</Description>
           <Options moHideChildren="1"/>
           <LastState Value="" RealAddress="00000000"/>
+          <Color>FF0000</Color>
           <GroupHeader>1</GroupHeader>
           <CheatEntries>
             <CheatEntry>
-              <ID>335</ID>
-              <Description>"Item selection screen"</Description>
+              <ID>627</ID>
+              <Description>"Item Selector"</Description>
               <Options moHideChildren="1"/>
-              <LastState Value="" RealAddress="00000000"/>
-              <GroupHeader>1</GroupHeader>
+              <LastState/>
+              <VariableType>Auto Assembler Script</VariableType>
+              <AssemblerScript>{$lua}
+if syntaxcheck then return end
+
+local secondOpcodeBytes = "A3 40 9F "..xxxx
+local originalBytes = "0F B6 01 "..secondOpcodeBytes
+-- 0F B6 01 A3 40 9F xx xx
+
+[ENABLE]
+
+-- The instruction in this address is run on every frame. It checks what are the currently assigned items, all five, one by one, so it can render and show the effects on the pre-battle screen.
+itemSlotsUpdaterAddress = AOBScan(originalBytes.." C7 05 44 9F xx xx 00 00 00 00 A1 40 9F xx xx 3B 05 10")
+
+if itemSlotsUpdaterAddress == nil then
+   showMessage("Couldn't find the item slots updater bytes! Make sure to be on the pre-battle screen before activating this script.")
+   return 0
+end
+
+itemSlotsUpdaterAddress = itemSlotsUpdaterAddress[0]
+
+-- Because in this game each character has their own set of static addresses for everything, and because this game has lots of characters, the most
+-- appropriate way of doing this would be by making a script that automatically gets the addresses of each item slot for the current character.
+-- Make sure to deactivate and activate again this script when you switch to another character. When you're done choosing the items, you don't need to keep this script activated.
+
+autoAssemble([[
+alloc(getItemSlotsAddresses,80)
+alloc(itemSelector,128)
+label(itemSlots)
+label(offset)
+registersymbol(itemSlots)
+registersymbol(offset)
+
+itemSelector:
+
+itemSlots:
+dd 0,0,0,0,0             // Reserve space to store the addresses of the five item slots, each, 4 bytes wide.
+
+//--------------------
+
+getItemSlotsAddresses:
+
+offset:                  // The offset to be used to store the addresses in the correct locations, with increments of 4 bytes, five times.
+dd 0
+
+code:
+cmp [offset],(int)16     // Skip to the original code when finished storing all slots addresses.
+jg originalcode
+cmp [itemSlots],ecx      // ecx contains the address of the respective item slot currently being iterated by the updater.
+je originalcode          // Sometimes it happens that the first address is stored twice. This skips it if already stored.
+push eax
+mov eax,itemSlots        // Copy the address of itemSlots to eax...
+add eax,[offset]         // ... to then sum the offset to the address ...
+mov [eax],ecx            // ... and finally copying the slot's address to the respective itemSlots location.
+pop eax
+add [offset],(int)4      // Increase the offset so that the next iterated slot is stored in the next position.
+
+originalcode:
+movzx eax,byte ptr [ecx]
+db ]]..secondOpcodeBytes..[[
+
+jmp return
+
+]]..itemSlotsUpdaterAddress..[[:
+jmp code
+nop 3
+return:
+]])
+
+
+waitFinishIterating = createTimer(getMainForm())
+waitFinishIterating.Interval = 100
+waitFinishIterating.OnTimer = function(waitFinishIterating)
+   local lastSlotBytes = readBytes("itemSlots+10", 4, true)      -- Read the bytes of the last stored address to check whether it finished getting them.
+
+   if table.concat(lastSlotBytes) &gt; "0000" then
+      waitFinishIterating.destroy()
+
+      local offset = 0
+      local slotsAddresses = {}
+
+      -- Convert all addresses from little-endian to big-endian, then sort in ascending order.
+      -- Otherwise in little-endian it will sort incorrectly when the second byte is greater and the first is smaller.
+      -- Sorting is needed because it may happen that the script is activated in the middle o the iteration, which would result in an incorrect order.
+
+      for i = 1, 5 do
+--          table.insert(slotsAddresses, readBytes("itemSlots+"..tohex(offset), 4, true))
+          local slotAddressBytes = readBytes("itemSlots+"..tohex(offset), 4, true)
+          local tempTable = {}
+
+          for j = 4, 1, -1 do                    -- Loop in reverse and reinsert in big-endian order.
+              table.insert(tempTable, tohex(slotAddressBytes[j]))
+          end
+
+--          table.remove(slotsAddresses,#slotsAddresses)
+--          table.insert(slotsAddresses,1,table.concat(temptable))
+          table.insert(slotsAddresses,table.concat(tempTable))
+
+          offset = offset + 4
+      end
+
+      table.sort(slotsAddresses)
+
+      slotsAddresses = table.concat(slotsAddresses, ",")
+
+
+      autoAssemble([[
+      dealloc(getItemSlotsAddresses)
+      unregistersymbol(offset)
+
+      itemSelector:
+
+      itemSlots:
+      dd ]]..slotsAddresses..[[         // Redefine the five values to the ones of the sorted list.
+
+      //-------------------------------
+
+      ]]..itemSlotsUpdaterAddress..[[:  // Reset the itemSlotsUpdaterAddress to it's original code, as it's not needed anymore.
+      db ]]..originalBytes)
+
+   end
+end
+
+
+[DISABLE]
+waitFinishIterating.destroy()
+
+autoAssemble([[
+dealloc(itemSelector)
+dealloc(getItemSlotsAddresses)
+unregistersymbol(itemSlots)
+unregistersymbol(offset)
+
+]]..itemSlotsUpdaterAddress..[[:
+db ]]..originalBytes)
+</AssemblerScript>
               <CheatEntries>
                 <CheatEntry>
                   <ID>334</ID>
@@ -833,7 +932,7 @@ movaps [ecx],xmm1
 22:24-5 Musashi ONLY, taunting attack level raises
 </DropDownList>
                   <VariableType>Byte</VariableType>
-                  <Address>204CA270</Address>
+                  <Address>[itemSlots]</Address>
                 </CheatEntry>
                 <CheatEntry>
                   <ID>332</ID>
@@ -960,7 +1059,7 @@ movaps [ecx],xmm1
 22:24-5 Musashi ONLY, taunting attack level raises
 </DropDownList>
                   <VariableType>Byte</VariableType>
-                  <Address>204CA271</Address>
+                  <Address>[itemSlots+4]</Address>
                 </CheatEntry>
                 <CheatEntry>
                   <ID>331</ID>
@@ -1087,7 +1186,7 @@ movaps [ecx],xmm1
 22:24-5 Musashi ONLY, taunting attack level raises
 </DropDownList>
                   <VariableType>Byte</VariableType>
-                  <Address>204CA272</Address>
+                  <Address>[itemSlots+8]</Address>
                 </CheatEntry>
                 <CheatEntry>
                   <ID>330</ID>
@@ -1214,7 +1313,7 @@ movaps [ecx],xmm1
 22:24-5 Musashi ONLY, taunting attack level raises
 </DropDownList>
                   <VariableType>Byte</VariableType>
-                  <Address>204CA273</Address>
+                  <Address>[itemSlots+C]</Address>
                 </CheatEntry>
                 <CheatEntry>
                   <ID>498</ID>
@@ -1341,10 +1440,61 @@ movaps [ecx],xmm1
 22:24-5 Musashi ONLY, taunting attack level raises
 </DropDownList>
                   <VariableType>Byte</VariableType>
-                  <Address>204CA274</Address>
+                  <Address>[itemSlots+10]</Address>
                 </CheatEntry>
               </CheatEntries>
             </CheatEntry>
+          </CheatEntries>
+        </CheatEntry>
+      </CheatEntries>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>183</ID>
+      <Description>"Static Addresses"</Description>
+      <Options moHideChildren="1"/>
+      <LastState Value="" RealAddress="00000000"/>
+      <GroupHeader>1</GroupHeader>
+      <CheatEntries>
+        <CheatEntry>
+          <ID>316</ID>
+          <Description>"Any Character"</Description>
+          <Options moHideChildren="1"/>
+          <LastState Value="" RealAddress="00000000"/>
+          <GroupHeader>1</GroupHeader>
+          <CheatEntries>
+            <CheatEntry>
+              <ID>228</ID>
+              <Description>"XP in-battle"</Description>
+              <VariableType>4 Bytes</VariableType>
+              <Address>20514B48</Address>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>511</ID>
+              <Description>"camera x"</Description>
+              <VariableType>Float</VariableType>
+              <Address>20495E90</Address>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>614</ID>
+              <Description>"camera z"</Description>
+              <VariableType>Float</VariableType>
+              <Address>20495EB4</Address>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>609</ID>
+              <Description>"camera y"</Description>
+              <VariableType>Float</VariableType>
+              <Address>20495E98</Address>
+            </CheatEntry>
+          </CheatEntries>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>181</ID>
+          <Description>"Date Masamune"</Description>
+          <Options moHideChildren="1"/>
+          <LastState Value="" RealAddress="00000000"/>
+          <GroupHeader>1</GroupHeader>
+          <CheatEntries>
             <CheatEntry>
               <ID>245</ID>
               <Description>"Normal battle"</Description>
