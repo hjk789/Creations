@@ -2,12 +2,12 @@
 
 This is a cheat table for Sengoku Basara 2 for PCSX2 1.6.0, created in Cheat Engine 7.0. The exact identification of the game version used is SLPM_664.47 NTSC v1.01.
 
-![cheat table](https://i.imgur.com/T3pObqh.png)
+![cheat table](https://i.imgur.com/qB1DMss.png)
 
 ## Features
 
 - **Invincibility**  
-  The player character's health won't decrease when attacked. The character will still stagger, but won't ever die.
+  The player character's health won't decrease when attacked. The character will still stagger, but the health won't ever decrease.
 
 - **Infinite Basara**  
   The Basara gauge (blue bar) will always stay completely filled. As a result, the horse boost also becomes infinite, boosting as long as you keep the button pressed (circle).
@@ -36,8 +36,11 @@ This is a cheat table for Sengoku Basara 2 for PCSX2 1.6.0, created in Cheat Eng
 - **Movement Speed Multiplier**  
   Makes the player character run faster by multiplying the movement speed by the number you specify (x1.40 by default).
   
+- **Item Selector**
+  Makes you able to choose any item, even if the item is not unlocked yet. It also includes the translated description of each item. After you are done choosing the items, you need to save the game to the memory card (i.e. save from inside the game) then load the save, otherwise the changes won't take effect. To do so, return to the main menu (the one after the start screen), choose the last option, press the circle button, and choose the second to last option inside the gray rectangle, and save it normally (choosing the option on the left two times, then confirming). Having done that, to load the save you can either choose the option below the one you just chose or reboot PCSX2. Keep in mind though that not all items will work, most will, but some won't.
+  
 - **Miscellaneous static addresses**  
-  A collection of static addresses that you can tweak the values. Each character has their own set of static addresses used only by them, so I added only two characters, which includes the stage's basic values and an item selector (currently only for Masamune). It also includes character-independent addresses, such as camera coords and experience. I can't guarantee that these addresses will work for you though.
+  A collection of static addresses that you can tweak the values. Each character has their own set of static addresses used only by them, so I added only two characters, which includes the stage's basic values. It also includes character-independent addresses, such as camera coords and experience. I can't guarantee that these addresses will work for you though.
   
 ## How to use
 
