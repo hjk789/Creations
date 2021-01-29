@@ -36,7 +36,7 @@ This is a cheat table for Sengoku Basara 2 for PCSX2 1.6.0, created in Cheat Eng
 - **Movement Speed Multiplier**  
   Makes the player character run faster by multiplying the movement speed by the number you specify (x1.40 by default).
   
-- **Item Selector**
+- **Item Selector**  
   Makes you able to choose any item, even if the item is not unlocked yet. It also includes the translated description of each item. After you are done choosing the items, you need to save the game to the memory card (i.e. save from inside the game) then load the save, otherwise the changes won't take effect. To do so, return to the main menu (the one after the start screen), choose the last option, press the circle button, and choose the second to last option inside the gray rectangle, and save it normally (choosing the option on the left two times, then confirming). Having done that, to load the save you can either choose the option below the one you just chose or reboot PCSX2. Keep in mind though that not all items will work, most will, but some won't.
   
 - **Miscellaneous static addresses**  
