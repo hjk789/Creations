@@ -244,7 +244,7 @@ if syntaxcheck then return end
 goldHudUpdaterAddress = AOBScan("89 11 8B 0D 20 A0 xx xx 81 C1 6C 02 00 00 89 C8 C1 E8 0C 8B 04 85 30 xx xx xx BB xx xx xx 30 01 C1 0F 88 xx xx xx xx 8B 01 99 A3 30 9F xx xx 89 15 34 9F xx xx C7")
 
 if goldHudUpdaterAddress == nil then
-   showMessage("Couldn't find the gold HUD updater bytes! Make sure to receive gold at least once before activating this.")
+   showMessage("Couldn't find the gold HUD updater bytes! Make sure to receive gold and the gold HUD appear and disappear at least twice before activating this.")
    return 0
 end
 
@@ -696,7 +696,7 @@ itemSlotsUpdaterAddress = itemSlotsUpdaterAddress[0]
 -- Make sure to deactivate and activate again this script when you switch to another character. When you're done choosing the items, you don't need to keep this script activated.
 
 autoAssemble([[
-alloc(getItemSlotsAddresses,80)
+alloc(getItemSlotsAddresses,128)
 alloc(itemSelector,128)
 label(itemSlots)
 label(offset)
@@ -706,26 +706,37 @@ registersymbol(offset)
 itemSelector:
 
 itemSlots:
-dd 0,0,0,0,0             // Reserve space to store the addresses of the five item slots, each, 4 bytes wide.
+dd 0,0,0,0,0                    // Reserve space to store the addresses of the five item slots, each, 4 bytes wide.
 
 //--------------------
 
 getItemSlotsAddresses:
 
-offset:                  // The offset to be used to store the addresses in the correct locations, with increments of 4 bytes, five times.
+offset:                         // The offset to be used to store the addresses in the correct locations, with increments of 4 bytes, five times.
 dd 0
 
 code:
-cmp [offset],(int)16     // Skip to the original code when finished storing all slots addresses.
+cmp [offset],(int)16            // Skip to the original code when already finished storing all slots addresses.
 jg originalcode
-cmp [itemSlots],ecx      // ecx contains the address of the respective item slot currently being iterated by the updater.
-je originalcode          // Sometimes it happens that the first address is stored twice. This skips it if already stored.
+
+// Skip specific slots that
+// were already stored:
+cmp [itemSlots],ecx             // ecx contains the address of the respective item slot currently being iterated by the updater.
+je originalcode                 // Sometimes it happens that the address is stored twice. This skips it if already stored.
+cmp [itemSlots+4],ecx
+je originalcode
+cmp [itemSlots+8],ecx
+je originalcode
+cmp [itemSlots+C],ecx
+je originalcode
+
+// Storing the slot address:
 push eax
-mov eax,itemSlots        // Copy the address of itemSlots to eax...
-add eax,[offset]         // ... to then sum the offset to the address ...
-mov [eax],ecx            // ... and finally copying the slot's address to the respective itemSlots location.
+mov eax,itemSlots               // Copy the address of itemSlots to eax...
+add eax,[offset]                // ... to then sum the offset to the address ...
+mov [eax],ecx                   // ... and finally copying the slot's address to the respective itemSlots location.
+add [offset],4                  // Increase the offset so that the next iterated slot is stored in the next position.
 pop eax
-add [offset],(int)4      // Increase the offset so that the next iterated slot is stored in the next position.
 
 originalcode:
 movzx eax,byte ptr [ecx]
@@ -745,7 +756,7 @@ waitFinishIterating.Interval = 100
 waitFinishIterating.OnTimer = function(waitFinishIterating)
    local lastSlotBytes = readBytes("itemSlots+10", 4, true)      -- Read the bytes of the last stored address to check whether it finished getting them.
 
-   if table.concat(lastSlotBytes) &gt; "0000" then
+   if table.concat(lastSlotBytes) &gt; "00000000" then
       waitFinishIterating.destroy()
 
       local offset = 0
@@ -756,7 +767,6 @@ waitFinishIterating.OnTimer = function(waitFinishIterating)
       -- Sorting is needed because it may happen that the script is activated in the middle o the iteration, which would result in an incorrect order.
 
       for i = 1, 5 do
---          table.insert(slotsAddresses, readBytes("itemSlots+"..tohex(offset), 4, true))
           local slotAddressBytes = readBytes("itemSlots+"..tohex(offset), 4, true)
           local tempTable = {}
 
@@ -764,8 +774,6 @@ waitFinishIterating.OnTimer = function(waitFinishIterating)
               table.insert(tempTable, tohex(slotAddressBytes[j]))
           end
 
---          table.remove(slotsAddresses,#slotsAddresses)
---          table.insert(slotsAddresses,1,table.concat(temptable))
           table.insert(slotsAddresses,table.concat(tempTable))
 
           offset = offset + 4
