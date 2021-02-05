@@ -51,7 +51,7 @@ This is a cheat table for Sengoku Basara 2 for PCSX2 1.6.0, created in Cheat Eng
 ## License
 
 - You can view the code, download copies and run this cheat table.
-- You can opinate on the features or suggest changes, improvements and new features.
+- You can opinate on the features, suggest changes, improvements and new features, and report any problems that you may have with this cheat table.
 - You can link to this cheat table's [FearlessRevolution post](https://fearlessrevolution.com/viewtopic.php?f=4&t=15025) or to this cheat table's [GitHub homepage](https://github.com/hjk789/Creations/tree/master/x86-Assembly-and-Lua/CheatEngine-Tables/PCSX2-1.6.0/Sengoku-Basara-2). 
 - You can modify your copy as you like.
 - You cannot do any other action not allowed in this license.  
