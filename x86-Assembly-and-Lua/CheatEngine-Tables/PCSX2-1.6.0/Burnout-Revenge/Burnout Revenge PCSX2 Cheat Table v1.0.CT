@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CheatTable CheatEngineTableVersion="29">
+  <CheatEntries>
+    <CheatEntry>
+      <ID>10</ID>
+      <Description>"Enable"</Description>
+      <Options moHideChildren="1"/>
+      <LastState/>
+      <VariableType>Auto Assembler Script</VariableType>
+      <AssemblerScript>{$lua}
+---------------------------------------------
+-- Burnout Revenge PCSX2 Cheat Table v1.0
+-- Created by BLBC (hjk789)
+-- Links:   fearlessrevolution.com/memberlist.php?mode=viewprofile&amp;amp;u=65626
+--          github.com/hjk789
+-- Copyright (c) BLBC, 2021+
+----------------------------------------------
+
+if syntaxcheck then return end
+
+[ENABLE]
+
+
+function tohex(int)
+   return string.format("%X", int)
+end
+
+------
+
+openProcess("pcsx2.exe")
+
+strings_add(getAutoAttachList(), "pcsx2.exe")
+
+local CEtableAddressList = getAddressList()
+
+CEtableAddressList.Control[1].OnSectionClick = nil  -- Disable the collumn sorting to prevent the records order to be messed up.
+
+local thoseTwoBytes = readBytes(AOBScan("05 B8 A1 xx xx")[0],5,true)       -- There are two bytes that always change on reboot but that are required. This
+xxxx = tohex(thoseTwoBytes[4]) .. " " .. tohex(thoseTwoBytes[5])           -- scans the memory to get them and stores them in a global variable to be used by the scripts.
+
+
+[DISABLE]
+</AssemblerScript>
+      <CheatEntries>
+        <CheatEntry>
+          <ID>12</ID>
+          <Description>"Infinite Boost"</Description>
+          <LastState/>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>{$lua}
+if syntaxcheck then return end
+
+[ENABLE]
+
+-- This is the same thing as manually setting the address value to 719 and
+-- freezing, but here you just need to activate the script and it will work.
+
+reapplyBoostTimer = createTimer(getMainForm())
+reapplyBoostTimer.Interval = 250
+reapplyBoostTimer.OnTimer = function()
+    autoAssemble([[
+    21EDA4E0:       // The actual max value of the boost bar is 720, but setting to this value glitches the
+    dd (float)719   // Crash event, making the car explode repeatedly and not letting you control the car.
+    ]])
+end
+
+[DISABLE]
+reapplyBoostTimer.destroy()
+</AssemblerScript>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>7</ID>
+          <Description>"Max Boosted Speed (requires boosting in bursts)"</Description>
+          <LastState Value="300" RealAddress="21DD37E4"/>
+          <VariableType>Float</VariableType>
+          <Address>21DD37E4</Address>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>11</ID>
+          <Description>"No Crash"</Description>
+          <LastState/>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>{$lua}
+if syntaxcheck then return end
+
+local secondOpcodeBytes = "A3 30 9F "..xxxx
+local originalBytes = "0F B6 01 "..secondOpcodeBytes
+-- 0F B6 01 A3 30 9F DB 01
+
+[ENABLE]
+
+-- The instruction in this address is run whenever a crash or takedown is about to happen. It checks whether the crash/takedown happened to then start the crash cam and the crash animation.
+crashCheckerAddress = AOBScan(originalBytes.." C7 05 34 9F xx xx 00 00 00 00 83 3D 30 9F xx xx 00 75 0D 83 3D 34 9F xx xx 00 0F 84 55 00 00 00 8B 15 80")
+
+if crashCheckerAddress == nil then
+   showMessage("Couldn't find the crash checker bytes! Make sure to crash the car or do a takedown at least once before activating this.")
+   return 0
+end
+
+crashCheckerAddress = crashCheckerAddress[0]
+
+autoAssemble([[
+alloc(noCrash,32)
+
+noCrash:            // ecx contains the address of the car that triggered the crash checker. At least in my case, 21DD268F is the address that represents the player's
+cmp ecx,21DD268F    // car, and it never changes. So this checks whether the car that will crash is the player's car, and if so, skip all the code, so that the
+je return           // crash never happen. Alternatively, you could just nop the crashCheckerAddress, which would disable player crashing but also takedowns.
+
+// original code:
+movzx eax,byte ptr [ecx]
+db ]]..secondOpcodeBytes..[[
+
+jmp return
+
+]]..crashCheckerAddress..[[:
+jmp noCrash
+nop 3
+return:
+]])
+
+[DISABLE]
+
+autoAssemble([[
+dealloc(noCrash)
+
+]]..crashCheckerAddress..[[:
+db ]]..originalBytes)
+</AssemblerScript>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>9</ID>
+          <Description>"Disable Stopwatch (Burning Lap events only)"</Description>
+          <LastState/>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>{$lua}
+if syntaxcheck then return end
+
+[ENABLE]
+
+-- The instruction in this address is run on every frame. It updates the race's current elapsed time. This only works for timers that counts *up*,
+-- like the one in Burning Lap events. This doesn't work for timers that counts *down*, like Road Rage or Traffic Attack. I couldn't find it at all.
+stopwatchUpdaterAddress = AOBScan("89 11 C7 05 B8 A1 xx xx C0 72 2C 00")
+
+if stopwatchUpdaterAddress == nil then
+   showMessage("Couldn't find the stopwatch updater bytes! Make sure to start a race at least once before activating this.")
+   return 0
+end
+
+stopwatchUpdaterAddress = stopwatchUpdaterAddress[0]
+
+autoAssemble(stopwatchUpdaterAddress..[[:
+nop 2
+]])
+
+[DISABLE]
+
+autoAssemble(stopwatchUpdaterAddress..[[:
+db 89 11
+]])
+</AssemblerScript>
+        </CheatEntry>
+      </CheatEntries>
+    </CheatEntry>
+  </CheatEntries>
+  <UserdefinedSymbols/>
+</CheatTable>
