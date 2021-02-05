@@ -7,7 +7,7 @@ This is a cheat table for Burnout Revenge for PCSX2 1.6.0, created in Cheat Engi
 ## Features
 
 - **Infinite Boost**  
-  The boost meter will allways stay filled. This also applies to the Crash events, allowing you to trigger an explosion almost any time.
+  The boost meter will always stay filled. This also applies to the Crash events, allowing you to trigger an explosion almost any time.
   
 - **Max Boosted Speed**  
   Allows you to specify what is the maximum speed that you can reach by boosting. If you set a number higher than the car's original top speed, in order to reach that speed you have to boost in bursts, i.e. you have to hold the boost button for 2-3 seconds, release it, then hold it again for 2-3 seconds, release it, and repeat. If you just hold the boost button, the car won't reach the speed you've set. If you set a very high value, like 999, it's unlikely that you will be able to reach this speed before hitting anything or reaching a curve, but the bigger the number the faster the acceleration rate while boosting.
@@ -20,13 +20,14 @@ This is a cheat table for Burnout Revenge for PCSX2 1.6.0, created in Cheat Engi
   
 ## How to use
 
-- Download the cheat table file and open with Cheat Engine. 
+- Download the [cheat table file](https://fearlessrevolution.com/download/file.php?id=29435) and open with Cheat Engine. 
 - Make sure that Burnout Revenge in PCSX2 is running, then activate the "Enable" script. The script will automatically attach to the process (provided that you are running the game on PCSX2 1.6.0, otherwise attach it manually or correct the process name in the script).
 - When already in a race, activate the cheats you want. Some cheats require that you do an action at least once to be able to activate, a message box will tell you what you need to do.
 
 ## License
 
 - You can view the code, download copies and run this cheat table.
-- You can opinate on the features or suggest changes, improvements and new features.
+- You can opinate on the features, suggest changes, improvements and new features, and report any problems that you may have with this cheat table.
+- You can link to this cheat table's [FearlessRevolution post](https://fearlessrevolution.com/viewtopic.php?f=4&t=15207) or to this cheat table's [GitHub homepage](https://github.com/hjk789/Creations/tree/master/x86-Assembly-and-Lua/CheatEngine-Tables/PCSX2-1.6.0/Burnout-Revenge). 
 - You can modify your copy as you like.
 - You cannot do any other action not allowed in this license.  
