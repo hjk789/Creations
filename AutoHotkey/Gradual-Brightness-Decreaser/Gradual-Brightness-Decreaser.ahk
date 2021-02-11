@@ -1,5 +1,5 @@
 /*
-    Gradual Brightness Decreaser - v1.2
+    Gradual Brightness Decreaser - v1.2.1
     Created by BLBC (github.com/hjk789)
     Copyright (c) 2020+ BLBC
 */
@@ -45,7 +45,7 @@ desiredGammaIlluminance -= 128
 
 if (A_Hour == startHour && A_Min > 2 || A_Hour > startHour || A_Hour >= 0 && A_Hour <= 7)       ; If the script for some reason is started late (like when Windows is started at night), decrease all the missed minutes at once.
 {
-    if (currGammaRed >= 128)
+    if (currGammaRed >= 128 && currBrightness == origBrightness)
     {
         if (A_Hour < startHour)                                     ; If the script is started after midnight, count since the previous day.
         {
@@ -83,7 +83,7 @@ return
 
 decreaseBrightnessOrGamma()
 {
-    global startHour, blueLightFilterEnabled, desiredBrightness, desiredGammaIlluminance, gammaRedDecrValue, gammaBlueDecrValue, gammaGreenDecrValue, currGammaRed, currGammaGreen, currGammaBlue, currBrightness
+    global
 
     if (currBrightness > desiredBrightness)
         Monitor.SetBrightness(--currBrightness)
