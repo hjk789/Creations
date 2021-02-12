@@ -7,7 +7,7 @@
 
 ;************** SETTINGS **************
 
-whereToSaveTheWallpapers := "<PATH OF THE FOLDER TO WHERE THE WALLPAPERS WIL BE DOWNLOADED>"         ; If you don't want to keep the wallpapers, set the path to %temp%, which is the temporary folder.
+whereToSaveTheWallpapers := "<PATH OF THE FOLDER TO WHERE THE WALLPAPERS WILL BE DOWNLOADED>"         ; If you don't want to keep the wallpapers, set the path to "C:\Users\<USERNAME>\AppData\Local\Temp".
 
 useBingDailyImageInstead := false       ; Set this to true if instead of the Windows Spotlight images you want Bing's Image of the Day.
 
