@@ -1,5 +1,5 @@
 /*
-    Gradual Brightness Decreaser - v1.2.1
+    Gradual Brightness Decreaser - v1.3
     Created by BLBC (github.com/hjk789)
     Copyright (c) 2020+ BLBC
 */
@@ -25,8 +25,16 @@ ListLines off
 
 OnExit("ExitEvent")                                                 ; Run the ExitEvent function when the script exits for any reason, including when the system is shutdown.
 
-origBrightness := Monitor.GetBrightness().Current
-currBrightness := origBrightness
+
+currBrightness := Monitor.GetBrightness().Current
+
+IniRead, origBrightness, %A_ScriptDir%\gbd-settings.ini, Settings, OriginalBrightness, %A_Space%
+if (!origBrightness)
+{
+    IniWrite, %currBrightness%, %A_ScriptDir%\gbd-settings.ini, Settings, OriginalBrightness
+    origBrightness := currBrightness
+}
+
 currGammaRed   := Monitor.GetGammaRamp()["Red"]
 currGammaGreen := Monitor.GetGammaRamp()["Green"]
 currGammaBlue  := Monitor.GetGammaRamp()["Blue"]
