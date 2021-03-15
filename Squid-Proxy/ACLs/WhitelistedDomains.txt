@@ -1,0 +1,566 @@
+############################### SINGLE ASN SITES ###############################
+
+############### Google ###############
+cdn.ampproject.org # Images for some sites
+
+# YouTube
+.youtube.com
+youtu.be
+www.youtube-nocookie.com
+.ytimg.com # YouTube video thumbs
+.ggpht.com # YouTube user profile pic
+.googlevideo.com
+lh5.googleusercontent.com # Google profile pic
+
+# Google Drive
+drive.google.com
+clients6.google.com
+drive-thirdparty.googleusercontent.com
+content.googleapis.com
+
+# Google Earth
+kh.google.com # Data and informations
+khmdb.google.com # Wiki
+mw1.google.com # Images
+mw2.google.com # Images
+mt3.google.com # Streets with StreetView available
+cbk0.google.com # StreetView
+
+# Google
+www.google.com
+encrypted-tbn0.gstatic.com # Google Images' images
+accounts.google.com
+webcache.googleusercontent.com
+www.gstatic.com
+translate.google.com
+play-lh.googleusercontent.com # Play Store imgs
+groups.google.com
+docs.google.com
+support.google.com
+
+# General
+ocsp.pki.goog
+ssl.gstatic.com
+apis.google.com
+fonts.googleapis.com
+fonts.gstatic.com
+ajax.googleapis.com
+lh3.googleusercontent.com # Google profile pic in other sites
+lh4.googleusercontent.com # Google profile pic in other sites
+
+
+############### Amazon ###############
+tinypic.com
+i65.tinypic.com
+
+# SoundCloud
+soundcloud.com
+api-v2.soundcloud.com # Content
+cf-hls-media.sndcdn.com # Music
+i1.sndcdn.com # Profile pics
+
+# Flickr
+www.flickr.com
+combo.staticflickr.com
+live.staticflickr.com
+
+# BitBucket
+bitbucket.org
+d301sr5gafysq2.cloudfront.net # Style
+wac-cdn.atlassian.com # Frontpage style
+id.atlassian.com # Login page
+aid-frontend.prod.atl-paas.net # Login scripts 1
+aid-static-assets.prod.atl-paas.net # Login scripts 2
+auth.atlassian.com
+atlassian-account-prod.guardian.pus2.auth0.com # 2FA
+atlassian.net
+www.atlassian.com
+community.atlassian.com
+
+# GfyCat
+gfycat.com
+thumbs.gfycat.com
+api.gfycat.com
+giant.gfycat.com
+
+# Epic Store
+www.epicgames.com
+epicgames.com
+accounts.epicgames.com
+store-site-backend-static.ak.epicgames.com
+store-content.ak.epicgames.com
+static-assets-prod.epicgames.com
+static-assets-prod.unrealengine.com
+media-cdn.epicgames.com
+cdn1.epicgames.com
+cdn1.unrealengine.com
+cdn2.unrealengine.com
+www.unrealengine.com
+epic-games-api.arkoselabs.com
+cdn.arkoselabs.com
+payment-website-pci.ol.epicgames.com
+
+# Mozilla
+www.mozilla.org
+aus5.mozilla.org # Firefox version check
+download.mozilla.org
+download-installer.cdn.mozilla.net
+download.cdn.mozilla.net
+versioncheck.addons.mozilla.org
+versioncheck-bg.addons.mozilla.org
+addons.cdn.mozilla.net
+services.addons.mozilla.org
+content-signature-2.cdn.mozilla.net
+addons.mozilla.org
+addons-amo.cdn.mozilla.net # Add-ons site style
+support.mozilla.org
+static-media-prod-cdn.itsre-sumo.mozilla.net # Support site style
+user-media-prod-cdn.itsre-sumo.mozilla.net # Support site logo
+firefoxusercontent.com # Support site profile pic
+oauth.accounts.firefox.com # Login check
+accounts.firefox.com
+accounts-static.cdn.mozilla.net
+api.accounts.firefox.com
+
+# Slack
+slack.com
+app.slack.com # Site
+files.slack.com
+a.slack-edge.com # Content 1
+wss-primary.slack.com # Content 2
+edgeapi.slack.com # Content 3
+ca.slack-edge.com # Profile pics
+slack-imgs.com
+
+
+############### CloudFlare ###############
+cdnjs.cloudflare.com
+ajax.cloudflare.com
+
+www.fanboy.co.nz
+filters.adtidy.org
+cdn.adblockcdn.com
+
+medium.com
+miro.medium.com
+cdn-client.medium.com # Images
+
+www.pcmag.com
+i.pcmag.com
+
+genius.com
+assets.genius.com
+
+www.patreon.com
+c10.patreonusercontent.com # Images
+c1.patreon.com # Scripts
+
+www.bleepingcomputer.com
+www.bleepstatic.com
+
+# Steam
+store.steampowered.com
+steamcdn-a.akamaihd.net
+steamstore-a.akamaihd.net
+steamcommunity.com
+steamcommunity-a.akamaihd.net
+steamuserimages-a.akamaihd.net
+media.steampowered.com
+media4.steampowered.com
+clientconfig.akamai.steamstatic.com
+api.steampowered.com
+steambroadcast.akamaized.net
+storefront.steampowered.com # Steam client update release notes
+.steamcontent.com # Game update download
+cdn.cloudflare.steamstatic.com # CloudFlare
+store.cloudflare.steamstatic.com # CloudFlare
+community.cloudflare.steamstatic.com # CloudFlare
+
+
+############### Valve ###############
+.cm.steampowered.com # Connect to Steam Client
+client-download.steampowered.com # Steam Client update download
+
+
+############### Fastly ###############
+www.https-rulesets.org # HTTPS Everywhere
+
+# Business Insider
+www.businessinsider.com
+i.insider.com
+
+# Vice
+www.vice.com
+oembed.vice.com # YouTube embed
+
+# Giphy
+giphy.com
+media0.giphy.com
+api.giphy.com # Site content
+
+# XKCD
+xkcd.com
+imgs.xkcd.com
+
+# Wired
+www.wired.com
+media.wired.com
+www.wired.co.uk
+
+# PC World
+www.pcworld.com
+csmb.staticworld.net # Logo
+images.idgesg.net # Images 1
+images.techhive.com # Images 2
+
+# Lifehacker
+lifehacker.com
+i.kinja-img.com
+x.kinja-static.com
+kinja.com # Comments
+kinja-vh.akamaihd.net # Video
+
+# Tenor
+media1.tenor.co # Link
+media1.tenor.com # GIF
+tenor.com # Site style
+
+# Reddit
+www.reddit.com
+.thumbs.redditmedia.com
+www.redditmedia.com # External media embeds (Gfycat, etc.)
+emoji.redditmedia.com
+www.redditstatic.com
+redd.it
+preview.redd.it
+i.redd.it
+v.redd.it
+vcf.redd.it # Videos
+styles.redditmedia.com # Layout images of some subs (new Reddit)
+external-preview.redd.it # Media preview (Imgur) (new Reddit)
+gql.reddit.com # Top growing communities (new Reddit)
+gateway.reddit.com # Comments (new Reddit)
+cdn.embedly.com # External video (Gfycat) (new Reddit) and Imgur embed
+oauth.reddit.com # Change account's settings (new Reddit)
+
+# Imgur
+imgur.com
+api.imgur.com # Embed
+s.imgur.com # GIF embed
+i.imgur.com
+i.stack.imgur.com # StackExchange uploaded images
+
+# StackExchange
+serverfault.com
+askubuntu.com
+superuser.com
+stackoverflow.com
+chat.stackoverflow.com
+.stackexchange.com
+cdn.sstatic.net
+cdn-chat.sstatic.net
+
+# Quora
+www.quora.com
+qsbr.fs.quoracdn.net # Content
+qph.fs.quoracdn.net # Images
+qsf.fs.quoracdn.net # Profile pic
+
+# Vimeo
+vimeo.com
+i.vimeocdn.com # Images
+f.vimeocdn.com # Style
+player.vimeo.com
+skyfire.vimeocdn.com # Video 1
+vod-progressive.akamaized.net # Video 2
+
+# CNET
+www.cnet.com
+cnet1.cbsistatic.com # JavaScript
+cnet2.cbsistatic.com # Style
+cnet3.cbsistatic.com # News body's images
+cnet4.cbsistatic.com # Other images
+
+# The Verge
+www.theverge.com
+cdn.vox-cdn.com # Images
+auth.voxmedia.com # Comments
+volume.vox-cdn.com # Video
+
+# ZDNet
+www.zdnet.com
+zdnet1.cbsistatic.com # Images
+zdnet2.cbsistatic.com # Style
+zdnet3.cbsistatic.com # Thumbs
+zdnet4.cbsistatic.com
+production-cmp.isgprivacy.cbsi.com # Comments
+
+############### Facebook ###############
+www.facebook.com
+.xx.fbcdn.net
+.fna.fbcdn.net
+
+www.instagram.com
+.cdninstagram.com
+
+web.whatsapp.com
+api.whatsapp.com
+wa.me
+
+
+############### Microsoft ###############
+checkappexec.microsoft.com # SmartScreen
+
+
+############### Automattic ###############
+# Gravatar
+www.gravatar.com
+gravatar.com # Expanded image
+secure.gravatar.com
+i0.wp.com # Profile pic in external sites 1
+i1.wp.com # Profile pic in external sites 2
+i2.wp.com # Profile pic in external sites 3
+
+stackoverflow.blog
+149351115.v2.pressablecdn.com # Blog style
+
+
+############### WikiMedia Foundation ###############
+en.wikipedia.org
+en.wiktionary.org
+upload.wikimedia.org
+
+
+############### Hurricane Electric ###############
+www.startpage.com
+us-browse.startpage.com # View anonymous
+.us-proxy.startpage.com # View anonymous
+
+
+############### Internet Archive ###############
+archive.org
+web.archive.org
+ia802804.us.archive.org # Video
+
+
+############### Yandex ###############
+yandex.com
+yandex.ocsp-responder.com
+yastatic.net # Style
+im0-tub-com.yandex.net # Thumbs
+
+
+############### Netflix ###############
+www.netflix.com
+codex.nflxext.com # Content
+
+
+############################### Multi-ASN Sites ###############################
+# Twitter
+t.co # ASN Twitter
+twitter.com # ASN Twitter
+abs.twimg.com # Content 1 # Verizon
+api.twitter.com # Content 2 # ASN Twitter
+abs-0.twimg.com # GIFs # Fastly
+pbs.twimg.com # Images # Verizon
+video.twimg.com # Verizon and Akamai
+cards-frame.twitter.com # YouTube embed 1 # ASN Twitter
+ton.twimg.com # YouTube embed 2 # Verizon
+
+# AdBlock
+easylist-downloads.adblockplus.org # Hetzner
+
+# OCSP
+ocsp.int-x3.letsencrypt.org # Akamai
+ocsp.usertrust.com # Hetzner Online and Highwinds
+crl.usertrust.com
+ocsp.sectigo.com # Hetzner Online
+geant.ocsp.sectigo.com # Highwinds
+crl.sectigo.com # Highwinds
+ocsp.digicert.com # Verizon
+crl3.digicert.com # Verizon
+crl4.digicert.com # Verizon
+status.rapidssl.com # Verizon
+ocsp.comodoca.com # Highwinds
+crl.comodoca.com # Highwinds
+status.geotrust.com # Verizon
+ocsp.globalsign.com # Cloudflare
+ocsp2.globalsign.com # Cloudflare
+crl.globalsign.com # Cloudflare
+ctldl.windowsupdate.com # Verizon and Highwinds
+ocsp.godaddy.com # ASN GoDaddy
+ocsp.sca1b.amazontrust.com # Amazon
+status.geotrust.com # Verizon
+ocsp.entrust.net # Akamai
+status.thawte.com
+
+# IGN
+widgets.ign.com # Fastly
+apps.ign.com # Fastly
+oystatic.ignimgs.com # Fastly
+assets1.ignimgs.com # Fastly
+sm.ign.com # Akamai
+assets7.ign.com # Fastly
+apis.ign.com # Amazon
+oyster.ignimgs.com # Fastly
+kraken.ignimgs.com # Video # Fastly
+www.ign.com # Player # Fastly
+
+# Disqus
+.disqus.com # Fastly
+c.disquscdn.com # Images # Cloudflare
+a.disquscdn.com # Profile pic # Fastly
+uploads.disquscdn.com # Comments images # Fastly
+
+# Answers/Support Microsoft
+answers.microsoft.com # Akamai
+answersstaticfilecdn.azureedge.net # Answers style 1 # Akamai
+www.microsoft.com # Answers style 2 # Akamai
+filestore.community.support.microsoft.com # Profile pics # Microsoft
+docs.microsoft.com # Akamai
+support.microsoft.com # Akamai
+social.msdn.microsoft.com # Akamai
+i1.social.s-msft.com # Akamai
+msdn.microsoft.com # Akamai
+
+# Outlook
+www.hotmail.com # Microsoft
+outlook.live.com # Microsoft
+ow2.res.office365.com # Outlook style # Akamai
+login.live.com # Microsoft
+logincdn.msauth.net # login.live content # Microsoft
+account.live.com # Microsoft
+outlook-1.cdn.office.net # Outlook webapp # Akamai
+attachment.outlook.live.net # Microsoft
+
+# Dropbox
+www.dropbox.com # ASN Dropbox
+dropboxcaptcha.com # Login captcha 1 # Amazon
+dropbox-api.arkoselabs.com # Login captcha 2 # Amazon
+client-api.arkoselabs.com # Login captcha 3 # Amazon
+cdn.funcaptcha.com # Login captcha 4 # Amazon
+prod-nvirginia.arkoselabs.com # Login captcha 5 # Amazon
+cfl.dropboxstatic.com # Style # Cloudflare
+previews.dropbox.com # ASN Dropbox
+.previews.dropboxusercontent.com # ASN Dropbox
+dl.dropboxusercontent.com # File link  # ASN Dropbox
+dl-web.dropbox.com # Upload and download # ASN Dropbox
+
+# GitHub
+github.com # ASN GitHub
+uploads.github.com # ASN GitHub
+gist.github.com # ASN GitHub
+developer.github.com # Fastly
+docs.github.com
+help.github.com
+jobs.github.com
+github.githubassets.com # Fastly
+media.githubusercontent.com # Script # Fastly
+raw.githubusercontent.com # Fastly
+gist.githubusercontent.com # Raw gist # Fastly
+camo.githubusercontent.com # Uploaded images # Fastly
+avatars0.githubusercontent.com # Fastly
+avatars1.githubusercontent.com # Fastly
+avatars2.githubusercontent.com # Fastly
+avatars3.githubusercontent.com # Fastly
+user-images.githubusercontent.com # Fastly
+marketplace-screenshots.githubusercontent.com
+repository-images.githubusercontent.com
+github-production-upload-manifest-file-7fdce7.s3.amazonaws.com # Commit file upload # Amazon
+github-production-user-asset-6210df.s3.amazonaws.com # Comment image upload # Amazon
+
+# Time
+time.com # Amazon
+api.time.com # Style # Automattic
+
+# Pinterest
+www.pinterest.com # Fastly
+s.pinimg.com # Clouflare
+i.pinimg.com # Fastly
+
+# HumbleBundle
+www.humblebundle.com # Google
+humblebundle-a.akamaihd.net # M247
+hb.imgix.net # Fastly
+
+# ArsTechnica
+arstechnica.com # Amazon
+cdn.arstechnica.net # Other ASN
+
+# GOG
+www.gog.com # Akamai
+menu.gog.com # Akamai
+images.gog.com # Verizon
+api.gog.com # Akamai
+auth.gog.com # Akamai
+login.gog.com # Akamai
+reviews.gog.com # Akamai
+menu-static.gog-statics.com # Verizon
+static-login.gog-statics.com # Verizon
+www4-static.gog-statics.com  # Verizon
+images.gog-statics.com # Verizon
+images-1.gog-statics.com # Verizon
+images-2.gog-statics.com # Verizon
+images-3.gog-statics.com # Verizon
+images-4.gog-statics.com # Verizon
+productcard.gog-statics.com # Akamai
+
+# Ubi Store
+store.ubi.com # CloudFlare
+account.ubisoft.com # ASN Ubisoft
+connect.ubisoft.com # Amazon
+register.ubisoft.com
+account2-api.ubisoft.com # Account page 2FA check # ASN Ubisoft
+public-ubiservices.ubi.com # Required to login # Amazon
+overlay.ubisoft.com
+beta.ubi.com
+ubisoftconnect.com
+ubistatic-a.akamaihd.net # Required to login # Akamai
+ubistatic2-a.akamaihd.net # Required to login # Akamai
+static-webservicesops.akamaized.net # Required to login # Akamai
+ubisoft-avatars.akamaized.net # Akamai
+
+# MakeUseOf
+www.makeuseof.com # Amazon
+static.makeuseof.com # Highwinds
+
+# BBC
+www.bbc.com # Fastly
+static.bbc.co.uk # Style # Akamai
+ichef.bbci.co.uk # Images # Akamai
+nav.files.bbci.co.uk # Menu # Akamai
+
+# TechRadar
+www.techradar.com
+vanilla.futurecdn.net # Style
+cdn.mos.cms.futurecdn.net # Images
+
+# Gitlab
+gitlab.com # CloudFlare
+assets.gitlab-static.net # Fastly
+user-content.gitlab-static.net # Google
+
+# JW Player
+ssl.p.jwpcdn.com # Fastly
+cdn.jwplayer.com # Amazon
+
+# Streamable
+streamable.com # Fastly
+cdn-cf-east.streamable.com
+
+# PayPal
+www.paypal.com # Akamai
+www.paypalobjects.com # Akamai
+ppl.i.lithium.com # PayPal forum style # Verizon
+www.paypal-community.com # Amazon
+
+
+################## Sites from other ASNs ###############################
+www.codeproject.com
+codeproject.freetls.fastly.net # Style
+
+.imageshack.us
+imageshack.com
+
+jsfiddle.net
+fiddle.jshell.net
