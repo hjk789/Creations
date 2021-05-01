@@ -2,7 +2,7 @@
 
 A configuration file for Squid Proxy in whitelist mode (deny all, allow some) with some interesting features. It was made for the Windows port of version 3.5.28.
 
-![log example](https://i.imgur.com/p0OQ2iU.png)
+![log example](https://i.imgur.com/lBEAYhB.png)
 
 ## Features
 
