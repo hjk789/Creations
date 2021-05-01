@@ -2,6 +2,8 @@
 
 A configuration file for Squid Proxy in whitelist mode (deny all, allow some) with some interesting features. It was made for the Windows port of version 3.5.28.
 
+![log example](https://i.imgur.com/p0OQ2iU.png)
+
 ## Features
 
 - SSL bumping configured to bump every domain not included in the whitelist. If you want the inverse, bumping only the domains included in a list, it's already preset in the configuration, just follow the instructions there.
