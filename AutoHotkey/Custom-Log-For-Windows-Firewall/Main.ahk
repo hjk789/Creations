@@ -1,8 +1,8 @@
-﻿#Persistent
+#Persistent
 #SingleInstance ignore
 
 
-;/* Map each drive letter to their drive ID. This is only needed to make the application paths in the logs be more readable, and
+/* Map each drive letter to their drive ID. This is only needed to make the application paths in the logs be more readable, and
     only because Windows Firewall doesn't do this automatically, showing something like \device\harddiskvolume4 instead of just C:
 */
 
@@ -21,7 +21,7 @@ loop, parse, driveLetters
 protocols := {"1": "ICMP", "2": "IGMP", "6": "TCP ", "17": "UDP "}      ; Map the protocol codes to their respective names.
 
 
-;/* Store these values in an active object. The sole purpose of this is the connections attribute. Because the event handler script doesn't stay open
+/* Store these values in an active object. The sole purpose of this is the connections attribute. Because the event handler script doesn't stay open
     after it finished running, the value of every variable is lost. One way to store the list of connected IPs would be writting to a file, but this
     would cause a lot of read/write in the  hard drive with many connections. An active object is an alternative to this, persistently storing all
     the values in the memory as long as the main script is running. For more details on active objects, see the comments in the event handler script.
