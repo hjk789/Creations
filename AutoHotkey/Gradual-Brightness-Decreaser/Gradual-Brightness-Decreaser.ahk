@@ -1,5 +1,5 @@
 /*
-    Gradual Brightness Decreaser - v1.3
+    Gradual Brightness Decreaser - v1.3.1
     Created by BLBC (github.com/hjk789)
     Copyright (c) 2020+ BLBC
 */
@@ -7,7 +7,7 @@
 
 ;*********** SETTINGS ***********
 
-startHour :=  19                  ; The hour of day that the script will start to work, in 24-hour format.
+startHour :=  18                  ; The hour of day that the script will start to work, in 24-hour format.
 blueLightFilterEnabled :=  true   ; Whether the script should also gradually change the screen's gamma colors to a warm tone. To use it, change it to true.
 desiredBrightness :=  5           ; The destination brightness to be decreased to. This value should be in the 0-100 range. This doesn't affect colors, only the monitor's light.
 desiredGammaIlluminance :=  143   ; The destination gamma illuminance to be decreased to. This value should be in the 0-255 range. This affects images' brightness. If you set this to 0 the screen will turn completely black.
@@ -53,7 +53,7 @@ desiredGammaIlluminance -= 128
 
 if (A_Hour == startHour && A_Min > 2 || A_Hour > startHour || A_Hour >= 0 && A_Hour <= 7)       ; If the script for some reason is started late (like when Windows is started at night), decrease all the missed minutes at once.
 {
-    if (currGammaRed >= 128 && currBrightness == origBrightness)
+    if (currGammaRed >= 128 && (currBrightness == origBrightness || currBrightness == desiredBrightness))
     {
         if (A_Hour < startHour)                                     ; If the script is started after midnight, count since the previous day.
         {
